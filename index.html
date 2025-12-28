@@ -1,107 +1,158 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Pixy インサイト（UI）</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Pixy インサイト</title>
   <style>
     :root{
-      --bg:#ffffff;
+      --bg:#f7f7fb;
+      --card:#ffffff;
       --text:#111827;
       --muted:#6b7280;
-      --line:#f3a6c8;
-      --chip:#e5e7eb;
-      --chipText:#111827;
-      --chipActive:#111111;
-      --chipActiveText:#ffffff;
-      --card:#ffffff;
-      --cardBorder:#d1d5db;
-      --cardActiveBg:#fde7ef;
-      --cardActiveBorder:#f3a6c8;
-      --shadow: 0 8px 20px rgba(0,0,0,.08);
-      --radius: 14px;
+      --line:#e5e7eb;
+      --pink:#fde2ea;
       --blue:#2563eb;
-      --pink:#ff4db8;
       --grid:#e5e7eb;
-      --danger:#ff4d4f;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --radius: 18px;
     }
-    *{box-sizing:border-box;}
-    html,body{height:100%;}
+    *{box-sizing:border-box}
     body{
       margin:0;
-      background:var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", Arial, sans-serif;
       color:var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Meiryo", Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      background:var(--bg);
     }
-    a{color:inherit;}
-    .wrap{ max-width: 420px; margin:0 auto; padding: 10px 12px 28px; }
+    .app{
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 18px 14px 24px;
+    }
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
-      padding: 4px 2px 8px; position: sticky; top: 0; background: var(--bg); z-index: 30;
+      margin-top: 10px;
+      margin-bottom: 4px;
     }
-    .logo{ font-weight:700; letter-spacing:.02em; font-size: 18px; }
-    .title{ font-size: 18px; font-weight:700; text-align:center; flex:1; }
-    .spacer{width:48px;}
-    .pinkline{ height:2px; background: var(--line); border-radius:999px; margin: 0 0 10px; opacity:.75; }
-    .label{ font-size: 13px; color: var(--text); margin: 6px 0 6px; font-weight:600; }
-    .input{
-      width:100%; border:0; border-bottom:2px solid var(--line);
-      padding:10px 2px 10px; font-size:16px; outline:none; background:transparent;
+    .brand{
+      font-weight: 900; letter-spacing:.2px;
+      font-size: 22px;
+    }
+    .title{
+      font-weight: 900;
+      font-size: 20px;
+    }
+    .sectionTitle{
+      margin-top: 18px;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing:.2px;
+    }
+    .divider{
+      height:3px;
+      background: #f0b6c7;
+      border-radius: 999px;
+      margin: 10px 0 14px;
+      opacity:.6;
     }
 
-    .chipRow{
-      display:flex; gap:8px; overflow:auto; padding:10px 0 2px;
-      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    .cardRow{
+      display:flex;
+      gap: 12px;
     }
-    .chipRow::-webkit-scrollbar{ display:none; }
-    .chip{
-      border:0; padding:8px 14px; border-radius:999px;
-      background:var(--chip); color:var(--chipText);
-      font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap;
-      flex:0 0 auto; transition: transform .08s ease;
-    }
-    .chip:active{ transform: scale(.98); }
-    .chip.active{ background:var(--chipActive); color:var(--chipActiveText); }
-
-    .sectionTitle{ display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top: 10px; }
-    .sectionTitle h2{ margin:0; font-size: 18px; font-weight:800; letter-spacing:.01em; }
-    .divider{ height:2px; background: var(--line); border-radius:999px; margin: 6px 0 10px; opacity:.75; }
-
-    .cards{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
     .card{
-      border: 1.5px solid var(--cardBorder); background: var(--card);
-      border-radius: 12px; padding: 10px; cursor:pointer;
-      transition: transform .08s ease, border-color .15s ease, background .15s ease;
-      min-height: 88px; position:relative;
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,.05);
+      border-radius: 18px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.04);
+      padding: 14px;
+      flex: 1;
+      min-width: 0;
     }
-    .card:active{ transform: scale(.99); }
-    .card.active{ border-color: var(--cardActiveBorder); background: var(--cardActiveBg); }
-    .card .kpiTitle{ font-size: 12px; color: var(--muted); font-weight:700; margin-bottom: 6px; }
-    .card .kpiValue{ font-size: 20px; font-weight:900; margin-bottom: 2px; }
-    .card .kpiSub{ font-size: 12px; color: var(--muted); font-weight:700; }
+    .card.pink{
+      background: var(--pink);
+      border-color: rgba(240, 182, 199, .35);
+    }
+    .card h3{
+      margin: 0 0 8px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 900;
+    }
+    .bigMoney{
+      font-weight: 1000;
+      font-size: 36px;
+      letter-spacing: .5px;
+      color: var(--blue);
+      margin: 2px 0 4px;
+    }
+    .subLine{
+      display:flex; align-items:baseline; gap: 8px;
+      color: var(--muted);
+      font-weight: 900;
+      font-size: 12px;
+    }
+    .subLine b{ color: var(--text); font-size: 13px; }
+    .kpiGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 12px;
+      margin-top: 6px;
+    }
+    .miniKpi{
+      border-radius: 12px;
+      padding: 6px 6px;
+    }
+    .miniLabel{
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 900;
+      margin-bottom: 2px;
+    }
+    .miniVal{
+      font-size: 22px;
+      color: var(--blue);
+      font-weight: 1000;
+      letter-spacing:.3px;
+    }
 
-    .miniGrid{ display:grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; margin-top: 6px; align-items:end; }
-    .miniItem .miniLabel{ font-size: 10px; color: var(--muted); font-weight:700; line-height:1.1; }
-    .miniItem .miniVal{ font-size: 16px; font-weight:900; margin-top:2px; line-height:1.1; }
-
-    .toggleRow{ display:flex; gap:8px; margin: 10px 0 8px; }
+    .toggleRow{
+      display:flex;
+      gap: 10px;
+      margin: 12px 0 10px;
+    }
     .toggle{
-      border:0; background: var(--chip); color: var(--chipText);
-      font-weight:800; font-size: 13px; padding:8px 12px; border-radius: 999px;
-      cursor:pointer; transition: transform .08s ease;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 1000;
+      font-size: 14px;
+      background: #e9eaef;
+      color: #374151;
+      cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.03);
     }
-    .toggle:active{ transform: scale(.98); }
-    .toggle.active{ background: #4b5563; color:#fff; }
+    .toggle.active{
+      background: #4b5563;
+      color: #fff;
+    }
 
     .chartCard{
-      border-radius: var(--radius); background:#fff; box-shadow: var(--shadow);
-      padding: 10px 10px 8px; position:relative; overflow:hidden;
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,.05);
+      border-radius: 18px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.04);
+      padding: 10px 10px 12px;
+      overflow: hidden;
     }
-    .chartWrap{ position:relative; height: 180px; margin-top: 4px; border-radius: 12px; background: #ffffff; overflow:hidden; }
-
-    /* 横スクロール（スマホは指で、PCはホイール/トラックパッド/ドラッグで） */
+    .chartWrap{
+      position:relative;
+      height: 180px;
+      margin-top: 4px;
+      border-radius: 12px;
+      background: #ffffff;
+      overflow:hidden;
+    }
     .chartViewport{
       position:absolute; left:0; right:0; top:0; bottom:28px;
       overflow-x:auto; overflow-y:hidden;
@@ -109,147 +160,208 @@
       scrollbar-width: none;
       cursor: grab;
     }
-    .chartViewport:active{ cursor: grabbing; }
     .chartViewport::-webkit-scrollbar{ display:none; }
-
-    .chartInner{ position:relative; height:100%; width: 100%; }
-    canvas{display:block; width:100%; height:100%;}
-
+    .chartInner{
+      position:relative;
+      height:100%;
+      width: 100%;
+    }
+    canvas{
+      display:block;
+      width:100%;
+      height:100%;
+    }
     .yLabels{
-      position:absolute; right: 6px; top: 4px; bottom: 28px;
-      display:flex; flex-direction:column; justify-content:space-between;
-      pointer-events:none; font-size: 11px; color: var(--muted); font-weight:700; opacity:.9;
-      z-index: 5;
-      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.92) 25%, rgba(255,255,255,1) 60%);
-      padding-left: 16px;
+      position:absolute;
+      right: 6px;
+      top: 8px;
+      bottom: 34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 900;
+      pointer-events:none;
+    }
+    .xLabelsViewport{
+      height: 28px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .xLabelsViewport::-webkit-scrollbar{ display:none; }
+    .xLabels{
+      display:flex;
+      gap: 0;
+      padding: 0 8px;
+      height: 28px;
+      align-items:flex-end;
+      color: #9ca3af;
+      font-weight: 900;
+      font-size: 12px;
+      white-space:nowrap;
+      user-select:none;
+      width: max-content;
+    }
+    .xLabels span{
+      width: var(--slot, 44px);
+      text-align:center;
+      flex: 0 0 auto;
     }
 
     .cursorLine{
-      position:absolute; top: 8px; bottom: 8px; width:2px;
-      background: rgba(37,99,235,.55); border-radius:999px;
-      pointer-events:none; display:none; z-index: 3;
+      position:absolute;
+      top: 8px;
+      bottom: 8px;
+      width:2px;
+      background: rgba(37,99,235,.55);
+      border-radius:999px;
+      pointer-events:none;
+      display:none;
+      z-index: 3;
     }
     .tooltip{
-      position:absolute; min-width: 90px; padding: 8px 10px;
-      background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow: 0 10px 30px rgba(0,0,0,.12);
-      border-radius: 10px; font-size: 12px; font-weight:800; color: var(--text);
-      transform: translate(-50%, -110%); pointer-events:none; display:none; white-space:nowrap; z-index: 4;
+      position:absolute;
+      min-width: 90px;
+      padding: 8px 10px;
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight:800;
+      color: var(--text);
+      transform: translate(-50%, -110%);
+      pointer-events:none;
+      display:none;
+      white-space:nowrap;
+      z-index: 4;
     }
-    .tooltip .tLabel{ font-weight:900; margin-bottom: 2px; color: var(--text); }
-    .tooltip .tVal{ font-weight:900; color: var(--muted); }
-
-    .xLabelsViewport{ margin-top: 8px; overflow-x:auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-    .xLabelsViewport::-webkit-scrollbar{ display:none; }
-    .xLabels{
-      display:flex; gap:0; user-select:none; font-size: 12px; color: var(--muted);
-      font-weight:700; padding: 0 2px; white-space:nowrap;
+    .tooltip .tLabel{
+      color: var(--text);
+      font-weight: 1000;
+      font-size: 16px;
+      margin-bottom: 2px;
     }
-    .xLabels span{
-      flex: 0 0 var(--slot, 64px); text-align:center; overflow:hidden; text-overflow:ellipsis;
+    .tooltip .tVal{
+      color: var(--muted);
+      font-weight: 1000;
+      font-size: 14px;
     }
 
-    .detailTabs{ display:flex; gap:8px; margin: 10px 0 10px; }
-    .tab{ border:0; padding: 8px 14px; border-radius: 999px; background: var(--chip); color: var(--chipText); font-weight:900; font-size: 13px; cursor:pointer; }
-    .tab.active{ background:#4b5563; color:#fff; }
+    .segRow{
+      display:flex;
+      gap: 10px;
+      margin-top: 12px;
+      margin-bottom: 10px;
+    }
+    .seg{
+      border:none;
+      border-radius:999px;
+      padding: 10px 16px;
+      font-weight: 1000;
+      background:#e9eaef;
+      color:#374151;
+      cursor:pointer;
+      font-size: 14px;
+    }
+    .seg.active{
+      background:#4b5563;
+      color:#fff;
+    }
 
-    .panel{ background:#fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; }
-    .panel + .panel{ margin-top: 10px; }
-
-    .subSection{ margin-top: 6px; font-size: 13px; font-weight:900; color: var(--text); display:flex; align-items:center; gap:8px; }
-    .dot{ width:10px; height:10px; border-radius:2px; background: var(--blue); flex:0 0 auto; }
-
-    .rows{ margin-top: 8px; border-top:1px solid rgba(0,0,0,.06); }
-    .row{
+    .progressCard{
+      background: var(--card);
+      border: 1px solid rgba(0,0,0,.05);
+      border-radius: 18px;
+      box-shadow: 0 8px 18px rgba(0,0,0,.04);
+      padding: 14px 14px 12px;
+    }
+    .progRow{
+      margin: 14px 0 10px;
+    }
+    .progHead{
       display:flex; justify-content:space-between; align-items:center;
-      padding: 8px 0; border-bottom:1px solid rgba(0,0,0,.06);
-      font-size: 13px; font-weight:700; color: var(--text);
+      font-weight: 1000;
+      color: var(--text);
+      margin-bottom: 8px;
     }
-    .row .rVal{ color: var(--text); font-weight:900; }
-
-    .barItem{ margin-top: 10px; }
-    .barTop{ display:flex; justify-content:space-between; gap:8px; font-size: 12px; font-weight:800; color: var(--text); }
-    .barBg{ height: 10px; background: #e5e7eb; border-radius: 999px; overflow:hidden; margin-top: 6px; }
-    .barFill{ height: 100%; background: var(--blue); width: 0%; border-radius: 999px; }
-
-    .genderBar{ margin-top: 10px; }
-    .genderTrack{ height: 10px; background: #e5e7eb; border-radius: 999px; overflow:hidden; display:flex; }
-    .genderFemale{ background: var(--pink); }
-    .genderMale{ background: var(--blue); }
-    .genderLabels{ margin-top: 8px; display:flex; justify-content:space-between; font-size: 12px; color: var(--text); font-weight:800; }
-    .muted{ color: var(--muted); font-weight:700; }
-
-    .p2Box{ background:#fff; border-radius: var(--radius); box-shadow: var(--shadow); padding: 12px; margin-top: 10px; }
-    .p2Title{ font-size: 13px; font-weight: 900; margin: 0 0 10px; }
-    .p2TableHeader{
-      display:grid; grid-template-columns: 64px 1fr 56px 56px; gap: 8px;
-      font-size: 11px; color: var(--muted); font-weight: 900;
-      padding-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,.06);
+    .progHead .lab{
+      font-size: 15px;
     }
-    .p2Row{
-      display:grid; grid-template-columns: 64px 1fr 56px 56px; gap: 8px;
-      align-items:center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,.06);
-      font-size: 12px; font-weight: 800;
+    .progHead .pct{
+      font-size: 18px;
     }
-    .p2BarBg{ height: 8px; background:#e5e7eb; border-radius:999px; overflow:hidden; }
-    .p2BarFill{ height: 100%; background: var(--blue); width: 0%; border-radius:999px; }
+    .bar{
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow:hidden;
+    }
+    .bar > i{
+      display:block;
+      height:100%;
+      width: 50%;
+      background: var(--blue);
+      border-radius: 999px;
+    }
 
-    .ctaRow{ display:flex; justify-content:flex-end; margin-top: 12px; }
-    .cta{
-      display:inline-flex; align-items:center; justify-content:center; border:0;
-      padding: 10px 18px; border-radius: 999px; background: var(--danger); color:#fff;
-      font-weight: 900; font-size: 14px; text-decoration:none; min-width: 140px;
-      box-shadow: 0 10px 18px rgba(255,77,79,.25); transition: transform .08s ease;
+    .tabsRow{
+      display:flex; gap: 10px;
+      margin-top: 10px;
     }
-    .cta:active{ transform: scale(.99); }
-    .hidden{ display:none !important; }
+    .tab{
+      border:none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-weight: 1000;
+      font-size: 14px;
+      background: #e9eaef;
+      color: #374151;
+      cursor:pointer;
+    }
+    .tab.active{
+      background: #4b5563;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="app">
     <div class="topbar">
-      <div class="logo">Pixy</div>
+      <div class="brand">Pixy</div>
       <div class="title">インサイト</div>
-      <div class="spacer"></div>
+      <div style="width:54px"></div>
     </div>
-    <div class="pinkline"></div>
 
-    <div class="label">鑑定師名</div>
-    <input id="readerName" class="input" placeholder="例：インイン" list="nameList" />
-    <datalist id="nameList">
-      <option value="インイン"></option>
-      <option value="ササイ"></option>
-      <option value="イトト"></option>
-    </datalist>
-
-    <div class="chipRow" id="monthRow" aria-label="月選択"></div>
-
-    <div class="sectionTitle">
-      <h2>メインデータ</h2>
-    </div>
+    <div class="sectionTitle">メインデータ</div>
     <div class="divider"></div>
 
-    <div class="cards" role="tablist" aria-label="メイン切替">
-      <button class="card active" id="tabKpi" role="tab" aria-selected="true">
-        <div class="kpiTitle">今月の報酬金</div>
-        <div class="kpiValue" id="kpiMoney">¥ 100,000</div>
-        <div class="kpiSub">前月比　<span id="kpiMoM">101%</span></div>
-      </button>
-      <button class="card" id="tabDetail" role="tab" aria-selected="false">
-        <div class="kpiTitle">鑑定データ詳細</div>
-        <div class="miniGrid">
-          <div class="miniItem">
+    <div class="cardRow" style="margin-bottom:10px">
+      <div class="card pink">
+        <h3>今月の報酬金</h3>
+        <div class="bigMoney" id="kpiMoney">¥ 100,000</div>
+        <div class="subLine">前月比 <b id="kpiMoM">101%</b></div>
+      </div>
+
+      <button class="card" id="detailCardBtn" style="text-align:left;border:1px solid rgba(0,0,0,.05);">
+        <h3>鑑定データ詳細</h3>
+        <div class="kpiGrid">
+          <div class="miniKpi">
             <div class="miniLabel">リピート件数</div>
             <div class="miniVal" id="kpiRepeatCnt">13</div>
           </div>
-          <div class="miniItem" style="text-align:right">
+          <div class="miniKpi">
             <div class="miniLabel">リピート人数</div>
             <div class="miniVal" id="kpiRepeatUsers">9</div>
           </div>
-          <div class="miniItem">
+          <div class="miniKpi">
             <div class="miniLabel">鑑定件数</div>
             <div class="miniVal" id="kpiKanteiCnt">76</div>
           </div>
-          <div class="miniItem" style="text-align:right">
+          <div class="miniKpi">
             <div class="miniLabel">鑑定人数</div>
             <div class="miniVal" id="kpiKanteiUsers">63</div>
           </div>
@@ -289,270 +401,137 @@
         </div>
       </div>
 
-      <div class="sectionTitle" style="margin-top:14px;">
-        <h2>詳細データ</h2>
-      </div>
+      <div class="sectionTitle" style="margin-top:14px">詳細データ</div>
       <div class="divider"></div>
 
-      <div class="detailTabs">
-        <button class="tab active" data-detail="user">ユーザー分析</button>
-        <button class="tab" data-detail="reader">鑑定師分析</button>
+      <div class="tabsRow">
+        <button class="tab active" data-tab="user">ユーザー分析</button>
+        <button class="tab" data-tab="kanteishi">鑑定師分析</button>
       </div>
 
-      <div id="panelUser" class="panel">
-        <div class="subSection"><span class="dot"></span>年齢構成比</div>
-        <div id="ageList"></div>
+      <div id="tabUser">
+        <div class="progressCard" style="margin-top:10px">
+          <div style="font-weight:1000;margin-bottom:10px;color:#374151">年齢構成比</div>
 
-        <div class="subSection" style="margin-top:14px;"><span class="dot"></span>男女比率</div>
-        <div class="genderBar">
-          <div class="genderTrack">
-            <div class="genderFemale" id="femaleBar" style="width:10%"></div>
-            <div class="genderMale" id="maleBar" style="width:90%"></div>
+          <div class="progRow">
+            <div class="progHead"><div class="lab">18 - 24</div><div class="pct" id="p1824">41.9%</div></div>
+            <div class="bar"><i id="b1824" style="width:41.9%"></i></div>
           </div>
-          <div class="genderLabels">
-            <div>女性　<span class="muted" id="femalePct">10%</span></div>
-            <div>男性　<span class="muted" id="malePct">90%</span></div>
+
+          <div class="progRow">
+            <div class="progHead"><div class="lab">25 - 34</div><div class="pct" id="p2534">30.9%</div></div>
+            <div class="bar"><i id="b2534" style="width:30.9%"></i></div>
+          </div>
+
+          <div class="progRow">
+            <div class="progHead"><div class="lab">35 - 44</div><div class="pct" id="p3544">12.7%</div></div>
+            <div class="bar"><i id="b3544" style="width:12.7%"></i></div>
+          </div>
+
+          <div class="progRow" style="margin-bottom:0">
+            <div class="progHead"><div class="lab">45 - 54</div><div class="pct" id="p4554">9.9%</div></div>
+            <div class="bar"><i id="b4554" style="width:9.9%"></i></div>
           </div>
         </div>
       </div>
 
-      <div id="panelReader" class="panel hidden">
-        <div class="subSection"><span class="dot"></span>待機時間</div>
-        <div class="rows">
-          <div class="row"><div class="rLabel">今月の待機時間</div><div class="rVal" id="waitThis">100h</div></div>
-          <div class="row"><div class="rLabel">前月の待機時間</div><div class="rVal" id="waitPrev">110h</div></div>
-          <div class="row"><div class="rLabel">前月比</div><div class="rVal" id="waitMoM">90%</div></div>
-        </div>
-
-        <div class="subSection" style="margin-top:12px;"><span class="dot" style="background:#22c55e"></span>アフターメッセージ</div>
-        <div class="rows">
-          <div class="row"><div class="rLabel">鑑定件数</div><div class="rVal" id="amTotal">10</div></div>
-          <div class="row"><div class="rLabel">送信数</div><div class="rVal" id="amSent">6</div></div>
-          <div class="row"><div class="rLabel">未送信</div><div class="rVal" id="amUnsent">4</div></div>
-          <div class="row"><div class="rLabel">送信率</div><div class="rVal" id="amRate">60%</div></div>
+      <div id="tabKanteishi" style="display:none">
+        <div class="progressCard" style="margin-top:10px">
+          <div style="font-weight:1000;color:#374151">（ここは仮）鑑定師分析</div>
+          <div style="color:#6b7280;font-weight:900;margin-top:6px;font-size:13px">ここに鑑定師別の内訳を後で追加できます。</div>
         </div>
       </div>
+
     </div>
-
-    <div id="viewDetail" class="hidden">
-      <div class="p2Box">
-        <div class="p2Title">回数別ユーザー数</div>
-        <div class="p2TableHeader">
-          <div>区分</div>
-          <div></div>
-          <div style="text-align:right;">人数</div>
-          <div style="text-align:right;">割合</div>
-        </div>
-        <div id="p2Rows"></div>
-
-        <div class="ctaRow">
-          <a class="cta" href="https://kuboizaizen.github.io/shino-insight/" target="_blank" rel="noopener noreferrer">詳細を確認</a>
-        </div>
-      </div>
-    </div>
-
-    <div style="height:12px"></div>
   </div>
 
 <script>
-  function makeSeries(count, base, wobble){
-    const arr = [];
-    for(let i=0;i<count;i++){
-      const t = Math.sin((i/count) * Math.PI * 2) * wobble;
-      const j = (Math.cos((i/count) * Math.PI * 4) * wobble*0.4);
-      const v = Math.max(50, Math.round(base + t + j + (Math.random()-0.5)*wobble*0.35));
-      arr.push(v);
-    }
-    return arr;
-  }
-  function hourLabels(){ const a=[]; for(let i=0;i<24;i++) a.push(i.toString().padStart(2,"0")+"時"); return a; }
-  function dayLabels(){ const a=[]; for(let i=1;i<=31;i++) a.push(i+"日"); return a; }
-  function weekLabels(){ return ["日","月","火","水","木","金","土"]; }
-
+  // ====== データ（仮） ======
   const APP = {
-    months: ["12月","11月","10月","9月","8月"],
-    state: { month: "12月", mainTab: "kpi", chartMode: "hour", detailTab: "user", cursorIndex: null },
+    state: { month: "12月", mainTab: "kpi", chartMode: "hour", cursorIndex: null },
     dataByMonth: {
       "12月": {
         money: 100000, mom: 101,
-        repeatCnt: 13, repeatUsers: 9, kanteiCnt: 76, kanteiUsers: 63,
+        repeatCnt: 13, repeatUsers: 9,
+        kanteiCnt: 76, kanteiUsers: 63,
         chart: {
-          hour: { labels: hourLabels(), values: makeSeries(24, 650, 420) },
-          weekday: { labels: weekLabels(), values: makeSeries(7, 720, 300) },
-          day: { labels: dayLabels(), values: makeSeries(31, 680, 520) }
+          hour:    { labels: ["02時","03時","04時","05時","06時"], values: [820,860,780,815,790] },
+          weekday: { labels: ["月","火","水","木","金","土","日"], values: [700,820,760,810,900,740,680] },
+          day:     { labels: ["4日","5日","6日","7日","8日","9日","14日","15日","16日","17日","18日","19日"], values: [900,820,830,810,890,850,1100,980,918,900,780,650] }
         },
-        user: {
-          age: [
-            { label:"18 - 24", pct:41.9 },
-            { label:"25 - 34", pct:30.9 },
-            { label:"35 - 44", pct:12.7 },
-            { label:"45 - 54", pct:9.9 }
-          ],
-          gender: { female: 10, male: 90 }
-        },
-        reader: {
-          waitThis: 100, waitPrev: 110, waitMoM: 90,
-          after: { total: 10, sent: 6, unsent: 4, rate: 60 }
-        },
-        p2: {
-          counts: [
-            { label:"1回", n:54, pct:85.7 },
-            { label:"2回", n:5, pct:7.9 },
-            { label:"3回", n:4, pct:6.3 },
-            { label:"4回", n:0, pct:0.0 },
-            { label:"5回以上", n:0, pct:0.0 }
-          ]
-        }
+        age: { "18-24": 41.9, "25-34": 30.9, "35-44": 12.7, "45-54": 9.9 }
       }
     }
   };
 
-  (function fillOtherMonths(){
-    const base = APP.dataByMonth["12月"];
-    const monthDefs = {
-      "11月": { money: 98000, mom: 97, bump:-60 },
-      "10月": { money: 102000, mom: 104, bump:+40 },
-      "9月": { money: 96000, mom: 92, bump:-120 },
-      "8月": { money: 104000, mom: 110, bump:+90 }
-    };
-    Object.entries(monthDefs).forEach(([m,def])=>{
-      APP.dataByMonth[m] = JSON.parse(JSON.stringify(base));
-      APP.dataByMonth[m].money = def.money;
-      APP.dataByMonth[m].mom = def.mom;
-      APP.dataByMonth[m].chart.hour.values = makeSeries(24, 650+def.bump, 420);
-      APP.dataByMonth[m].chart.weekday.values = makeSeries(7, 720+def.bump*0.5, 300);
-      APP.dataByMonth[m].chart.day.values = makeSeries(31, 680+def.bump, 520);
-    });
-  })();
+  // ====== DOM ======
+  const $ = (q)=>document.querySelector(q);
+  const kpiMoney = $("#kpiMoney");
+  const kpiMoM = $("#kpiMoM");
+  const kpiRepeatCnt = $("#kpiRepeatCnt");
+  const kpiRepeatUsers = $("#kpiRepeatUsers");
+  const kpiKanteiCnt = $("#kpiKanteiCnt");
+  const kpiKanteiUsers = $("#kpiKanteiUsers");
 
-  const el = (id) => document.getElementById(id);
-  function yen(n){ return "¥ " + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
-  function pct(n){ return (Math.round(n*10)/10).toString().replace(/\.0$/,"") + "%"; }
+  const chartCanvas = $("#chart");
+  const chartViewport = $("#chartViewport");
+  const chartInner = $("#chartInner");
+  const cursorLine = $("#cursorLine");
+  const tooltip = $("#tooltip");
+  const tipLabel = $("#tipLabel");
+  const tipValue = $("#tipValue");
 
-  function initMonths(){
-    const row = el("monthRow"); row.innerHTML = "";
-    APP.months.forEach(m=>{
-      const b = document.createElement("button");
-      b.className = "chip" + (m===APP.state.month ? " active":"");
-      b.textContent = m;
-      b.addEventListener("click", ()=>{ APP.state.month=m; syncAll(true); });
-      row.appendChild(b);
-    });
+  const xLabelsViewport = $("#xLabelsViewport");
+  const xLabels = $("#xLabels");
+
+  // ====== KPI反映 ======
+  function fmtYen(n){
+    const s = Math.round(n).toLocaleString("ja-JP");
+    return "¥ " + s;
   }
-
-  function syncKPIs(){
+  function syncKpi(){
     const d = APP.dataByMonth[APP.state.month];
-    el("kpiMoney").textContent = yen(d.money);
-    el("kpiMoM").textContent = d.mom + "%";
-    el("kpiRepeatCnt").textContent = d.repeatCnt;
-    el("kpiRepeatUsers").textContent = d.repeatUsers;
-    el("kpiKanteiCnt").textContent = d.kanteiCnt;
-    el("kpiKanteiUsers").textContent = d.kanteiUsers;
-  }
-  function syncMonthChips(){
-    [...document.querySelectorAll("#monthRow .chip")].forEach(ch=>{
-      ch.classList.toggle("active", ch.textContent===APP.state.month);
-    });
-  }
+    kpiMoney.textContent = fmtYen(d.money);
+    kpiMoM.textContent = d.mom + "%";
+    kpiRepeatCnt.textContent = d.repeatCnt.toLocaleString("ja-JP");
+    kpiRepeatUsers.textContent = d.repeatUsers.toLocaleString("ja-JP");
+    kpiKanteiCnt.textContent = d.kanteiCnt.toLocaleString("ja-JP");
+    kpiKanteiUsers.textContent = d.kanteiUsers.toLocaleString("ja-JP");
 
-  function syncMainTab(){
-    const isKpi = APP.state.mainTab==="kpi";
-    el("viewKpi").classList.toggle("hidden", !isKpi);
-    el("viewDetail").classList.toggle("hidden", isKpi);
-    el("tabKpi").classList.toggle("active", isKpi);
-    el("tabKpi").setAttribute("aria-selected", isKpi ? "true":"false");
-    el("tabDetail").classList.toggle("active", !isKpi);
-    el("tabDetail").setAttribute("aria-selected", !isKpi ? "true":"false");
+    // 年齢
+    const age = d.age;
+    $("#p1824").textContent = age["18-24"] + "%"; $("#b1824").style.width = age["18-24"] + "%";
+    $("#p2534").textContent = age["25-34"] + "%"; $("#b2534").style.width = age["25-34"] + "%";
+    $("#p3544").textContent = age["35-44"] + "%"; $("#b3544").style.width = age["35-44"] + "%";
+    $("#p4554").textContent = age["45-54"] + "%"; $("#b4554").style.width = age["45-54"] + "%";
   }
 
-  function syncDetailTab(){
-    const isUser = APP.state.detailTab==="user";
-    el("panelUser").classList.toggle("hidden", !isUser);
-    el("panelReader").classList.toggle("hidden", isUser);
-    [...document.querySelectorAll(".tab")].forEach(t=>{
-      t.classList.toggle("active", t.dataset.detail===APP.state.detailTab);
-    });
-  }
-
-  function syncUserPanel(){
-    const d = APP.dataByMonth[APP.state.month].user;
-    const ageWrap = el("ageList"); ageWrap.innerHTML = "";
-    d.age.forEach(item=>{
-      const block = document.createElement("div");
-      block.className = "barItem";
-      block.innerHTML = `
-        <div class="barTop"><div>${item.label}</div><div class="pct">${pct(item.pct)}</div></div>
-        <div class="barBg"><div class="barFill" style="width:${Math.max(0,Math.min(100,item.pct))}%"></div></div>
-      `;
-      ageWrap.appendChild(block);
-    });
-
-    const f = d.gender.female, m = d.gender.male;
-    el("femaleBar").style.width = f + "%";
-    el("maleBar").style.width = m + "%";
-    el("femalePct").textContent = f + "%";
-    el("malePct").textContent = m + "%";
-  }
-
-  function syncReaderPanel(){
-    const d = APP.dataByMonth[APP.state.month].reader;
-    el("waitThis").textContent = d.waitThis + "h";
-    el("waitPrev").textContent = d.waitPrev + "h";
-    el("waitMoM").textContent = d.waitMoM + "%";
-    el("amTotal").textContent = d.after.total;
-    el("amSent").textContent = d.after.sent;
-    el("amUnsent").textContent = d.after.unsent;
-    el("amRate").textContent = d.after.rate + "%";
-  }
-
-  function syncP2(){
-    const d = APP.dataByMonth[APP.state.month].p2;
-    const rows = el("p2Rows"); rows.innerHTML = "";
-    d.counts.forEach(item=>{
-      const r = document.createElement("div");
-      r.className = "p2Row";
-      r.innerHTML = `
-        <div>${item.label}</div>
-        <div class="p2BarBg"><div class="p2BarFill" style="width:${Math.max(0,Math.min(100,item.pct))}%"></div></div>
-        <div style="text-align:right;">${item.n}人</div>
-        <div style="text-align:right;">${pct(item.pct)}</div>
-      `;
-      rows.appendChild(r);
-    });
-  }
-
-  function slotForMode(mode){
-    if(mode==="weekday") return 110;  // 曜日別は「右にスライド」前提で広め
-    if(mode==="hour") return 74;      // 時間別も横に流す
-    return 56;                       // 日別は多いので少し詰める
-  }
-
+  // ====== チャート描画 ======
   const chart = {
-    canvas:null, ctx:null, inner:null, viewport:null, xLabelViewport:null, xLabelRow:null,
-    w:0, h:0, padding:{ left:10, right:46, top:10, bottom:10 }, yMax:1155, slot:64,
-    setSize(){
-      this.slot = slotForMode(APP.state.chartMode);
-      const vpRect = this.viewport.getBoundingClientRect();
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
-      const n = d.values.length;
+    canvas: chartCanvas,
+    viewport: chartViewport,
+    inner: chartInner,
+    ctx: chartCanvas.getContext("2d"),
+    w: 0, h: 0,
+    slot: 52,
+    padding: { top: 16, right: 14, bottom: 16, left: 14 },
+    points: [],
+    xLabelRow: xLabels,
 
-      const innerW = Math.max(vpRect.width, (n-1)*this.slot + this.padding.left + this.padding.right);
-      const innerH = vpRect.height;
-
-      this.inner.style.width = innerW + "px";
-      this.inner.style.height = innerH + "px";
-
-      this.w = Math.floor(innerW);
-      this.h = Math.floor(innerH);
-
+    resize(){
+      const rect = this.inner.getBoundingClientRect();
+      this.w = Math.max(10, rect.width);
+      this.h = Math.max(10, rect.height);
+      const dpr = window.devicePixelRatio || 1;
       this.canvas.width = Math.floor(this.w * dpr);
       this.canvas.height = Math.floor(this.h * dpr);
       this.canvas.style.width = this.w + "px";
       this.canvas.style.height = this.h + "px";
       this.ctx.setTransform(dpr,0,0,dpr,0,0);
-
-      this.xLabelRow.style.width = innerW + "px";
+    },
+    setInnerWidth(n){
+      const innerW = (n-1)*this.slot + this.padding.left + this.padding.right;
+      this.inner.style.width = Math.max(innerW, this.viewport.clientWidth) + "px";
       this.xLabelRow.style.setProperty("--slot", this.slot + "px");
     },
     draw(){
@@ -562,106 +541,126 @@
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0,0,w,h);
 
+      const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
+      const values = d.values;
+      const labels = d.labels;
+      const n = values.length;
+
+      this.setInnerWidth(n);
+
+      const maxV = Math.max(...values);
+      const minV = Math.min(...values);
+      const padV = Math.max(1, (maxV - minV) * 0.18);
+      const topV = Math.ceil((maxV + padV)/5)*5;
+      const botV = Math.floor((minV - padV)/5)*5;
+
+      $("#yTop").textContent = topV.toLocaleString("ja-JP");
+      $("#yMid").textContent = Math.round((topV+botV)/2).toLocaleString("ja-JP");
+      $("#yBot").textContent = botV.toLocaleString("ja-JP");
+
+      const mapY = (v)=>{
+        const t = (v - botV) / (topV - botV);
+        return (h - padding.bottom - 8) - t * (h - padding.top - padding.bottom - 16);
+      };
+      const mapX = (i)=> padding.left + i * this.slot;
+
       const gridYs = [ padding.top + 8, (h + padding.top - padding.bottom)/2, h - padding.bottom - 8 ];
       ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--grid").trim() || "#e5e7eb";
       ctx.lineWidth = 1;
       ctx.setLineDash([3,4]);
       gridYs.forEach(y=>{
-        ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(w - padding.right, y); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(w - padding.right, y);
+        ctx.stroke();
       });
       ctx.setLineDash([]);
 
-      const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
-      const values = d.values;
-      const n = values.length;
-      if(n===0) return;
+      const pts = [];
+      for(let i=0;i<n;i++){
+        pts.push({ i, x: mapX(i), y: mapY(values[i]), v: values[i] });
+      }
+      this.points = pts;
 
-      const maxV = Math.max(...values, 1);
-      const targetMax = Math.max(1155, Math.ceil(maxV/5)*5);
-      this.yMax = targetMax;
-
-      el("yTop").textContent = targetMax.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      el("yMid").textContent = Math.round(targetMax*2/3).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      el("yBot").textContent = Math.round(targetMax*1/3).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-      const x0 = padding.left;
-      const y0 = h - padding.bottom;
-      const y1 = padding.top;
-      const dx = this.slot;
-
-      const pts = values.map((v,i)=>{
-        const x = x0 + dx*i;
-        const t = v / targetMax;
-        const y = y0 - (y0 - y1) * t;
-        return {x,y,v,i};
-      });
+      const grad = ctx.createLinearGradient(0, padding.top, 0, h);
+      grad.addColorStop(0, "rgba(37,99,235,.20)");
+      grad.addColorStop(1, "rgba(37,99,235,0)");
+      ctx.fillStyle = grad;
 
       ctx.beginPath();
-      ctx.moveTo(pts[0].x, y0);
-      pts.forEach(p=>ctx.lineTo(p.x,p.y));
-      ctx.lineTo(pts[pts.length-1].x, y0);
+      pts.forEach((p, idx)=>{
+        if(idx===0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
+      });
+      ctx.lineTo(pts[pts.length-1].x, h - padding.bottom);
+      ctx.lineTo(pts[0].x, h - padding.bottom);
       ctx.closePath();
-      ctx.fillStyle = "rgba(37,99,235,.10)";
       ctx.fill();
 
       ctx.beginPath();
-      pts.forEach((p,idx)=>{ if(idx===0) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y); });
-      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--blue").trim() || "#2563eb";
+      pts.forEach((p, idx)=>{
+        if(idx===0) ctx.moveTo(p.x, p.y);
+        else ctx.lineTo(p.x, p.y);
+      });
       ctx.lineWidth = 2;
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--blue").trim() || "#2563eb";
       ctx.stroke();
 
       const idx = (APP.state.cursorIndex==null ? Math.floor(n/2) : APP.state.cursorIndex);
       const p = pts[Math.max(0,Math.min(n-1,idx))];
+
       ctx.beginPath();
       ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#2563eb";
       ctx.fill();
       ctx.lineWidth = 2;
-      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--blue").trim() || "#2563eb";
+      ctx.strokeStyle = "#ffffff";
       ctx.stroke();
 
-      renderXLabels(d.labels);
-      renderTooltip(p.x, p.y, d.labels[p.i], p.v);
+      renderXLabels(labels);
+      renderTooltip(p.x, p.y, labels[p.i], p.v);
       autoScrollToX(p.x);
     }
   };
 
   function renderXLabels(labels){
-    const row = chart.xLabelRow; row.innerHTML = "";
-    labels.forEach(lab=>{ const sp = document.createElement("span"); sp.textContent = lab; row.appendChild(sp); });
+    const row = chart.xLabelRow;
+    row.innerHTML = "";
+    labels.forEach(lab=>{
+      const sp = document.createElement("span");
+      sp.textContent = lab;
+      row.appendChild(sp);
+    });
+  }
+
+  function renderTooltip(x, y, label, value){
+    cursorLine.style.display = "block";
+    tooltip.style.display = "block";
+
+    cursorLine.style.left = x + "px";
+
+    tipLabel.textContent = label;
+    tipValue.textContent = fmtYen(value);
+
+    const minX = 54;
+    const maxX = chart.inner.clientWidth - 54;
+    const clampedX = Math.max(minX, Math.min(maxX, x));
+
+    tooltip.style.left = clampedX + "px";
+    tooltip.style.top = (y) + "px";
   }
 
   function autoScrollToX(x){
     const vp = chart.viewport;
-    const left = vp.scrollLeft, right = left + vp.clientWidth, pad = 40;
-    if(x < left + pad) vp.scrollLeft = Math.max(0, x - pad);
-    else if(x > right - pad) vp.scrollLeft = Math.max(0, x - vp.clientWidth + pad);
-  }
-
-  function renderTooltip(x, y, label, val){
-    const vp = chart.viewport;
-    const line = el("cursorLine");
-    const tip = el("tooltip");
-    line.style.display = "block";
-    tip.style.display = "block";
-    line.style.left = x + "px";
-
-    el("tipLabel").textContent = label;
-    el("tipValue").textContent = yen(val);
-
-    const visibleLeft = vp.scrollLeft;
-    const visibleRight = visibleLeft + vp.clientWidth;
-
-    let tipX = x;
-    tip.style.left = tipX + "px";
-    tip.style.top = (y + 6) + "px";
-
-    const tipW = tip.offsetWidth;
-    const min = visibleLeft + 10 + tipW/2;
-    const max = visibleRight - 10 - tipW/2;
-    if(tipX < min) tipX = min;
-    if(tipX > max) tipX = max;
-    tip.style.left = tipX + "px";
+    const left = vp.scrollLeft;
+    const w = vp.clientWidth;
+    const target = x - w*0.5;
+    const maxScroll = vp.scrollWidth - w;
+    const next = Math.max(0, Math.min(maxScroll, target));
+    if(Math.abs(next-left) > 1){
+      try{ vp.scrollLeft = next; }catch(_){}
+    }
+    try{ xLabelsViewport.scrollLeft = vp.scrollLeft; }catch(_){}
   }
 
   function pickIndexFromClientX(clientX){
@@ -676,27 +675,6 @@
     return Math.max(0, Math.min(n-1, i));
   }
 
-  function attachScrollSync(){
-    const vp = chart.viewport;
-    const xvp = chart.xLabelViewport;
-    let lock = false;
-
-    vp.addEventListener("scroll", ()=>{
-      if(lock) return;
-      lock = true;
-      xvp.scrollLeft = vp.scrollLeft;
-      lock = false;
-    }, {passive:true});
-
-    xvp.addEventListener("scroll", ()=>{
-      if(lock) return;
-      lock = true;
-      vp.scrollLeft = xvp.scrollLeft;
-      lock = false;
-    }, {passive:true});
-  }
-
-  // PCのマウスは「ドラッグで横スクロール」＋「クリックで点を選ぶ」
   function attachViewportPanAndSelect(){
     const vp = chart.viewport;
     let down = false;
@@ -714,6 +692,7 @@
       startX = e.clientX;
       startScroll = vp.scrollLeft;
       vp.setPointerCapture(e.pointerId);
+      vp.style.cursor = "grabbing";
     });
 
     vp.addEventListener("pointermove", (e)=>{
@@ -721,12 +700,14 @@
       const dx = e.clientX - startX;
       if(Math.abs(dx) > 3) moved = true;
       vp.scrollLeft = startScroll - dx;
+      xLabelsViewport.scrollLeft = vp.scrollLeft;
     });
 
     vp.addEventListener("pointerup", (e)=>{
       if(!down) return;
       down = false;
-      try{ vp.releasePointerCapture(e.pointerId); }catch(_){}
+      vp.style.cursor = "grab";
+      try{ vp.releasePointerCapture(e.pointerId);}catch(_){}
       // 動いてないなら「クリック」とみなして点を選ぶ
       if(!moved){
         APP.state.cursorIndex = pickIndexFromClientX(e.clientX);
@@ -745,76 +726,71 @@
       APP.state.cursorIndex = pickIndexFromClientX(e.clientX);
       chart.draw();
     }, {passive:true});
-  }
 
-  function syncChartModeButtons(){
-    [...document.querySelectorAll(".toggle")].forEach(b=>{
-      b.classList.toggle("active", b.dataset.mode===APP.state.chartMode);
-    });
-  }
-
-  function syncAll(resetScroll){
-    syncMonthChips();
-    syncKPIs();
-    syncUserPanel();
-    syncReaderPanel();
-    syncP2();
-    syncMainTab();
-    syncDetailTab();
-    syncChartModeButtons();
-
-    if(APP.state.mainTab==="kpi"){
-      chart.setSize();
-      if(resetScroll){
-        chart.viewport.scrollLeft = 0;
-        chart.xLabelViewport.scrollLeft = 0;
-      }
+    // スマホ（指でなぞって値を出す）
+    vp.addEventListener("touchstart", (e)=>{
+      const t = e.touches && e.touches[0];
+      if(!t) return;
+      APP.state.cursorIndex = pickIndexFromClientX(t.clientX);
       chart.draw();
-    }
+    }, {passive:true});
+
+    vp.addEventListener("touchmove", (e)=>{
+      const t = e.touches && e.touches[0];
+      if(!t) return;
+      APP.state.cursorIndex = pickIndexFromClientX(t.clientX);
+      chart.draw();
+    }, {passive:true});
+
   }
 
-  function attachUIEvents(){
-    el("tabKpi").addEventListener("click", ()=>{ APP.state.mainTab="kpi"; syncAll(false); });
-    el("tabDetail").addEventListener("click", ()=>{ APP.state.mainTab="detail"; syncAll(false); });
+  function syncChartMode(mode){
+    APP.state.chartMode = mode;
+    APP.state.cursorIndex = null;
+    chart.draw();
+  }
 
-    [...document.querySelectorAll(".toggle")].forEach(b=>{
-      b.addEventListener("click", ()=>{
-        APP.state.chartMode = b.dataset.mode;
-        APP.state.cursorIndex = null;
-        syncAll(true);
+  function wireUi(){
+    document.querySelectorAll(".toggle").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".toggle").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        syncChartMode(btn.dataset.mode);
       });
     });
 
-    [...document.querySelectorAll(".tab")].forEach(b=>{
-      b.addEventListener("click", ()=>{
-        APP.state.detailTab = b.dataset.detail;
-        syncAll(false);
+    document.querySelectorAll(".tab").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        const tab = btn.dataset.tab;
+        $("#tabUser").style.display = (tab==="user") ? "" : "none";
+        $("#tabKanteishi").style.display = (tab==="kanteishi") ? "" : "none";
       });
     });
 
-    window.addEventListener("resize", ()=>{
-      if(APP.state.mainTab==="kpi"){
-        chart.setSize();
-        chart.draw();
-      }
-    });
+    chartViewport.addEventListener("scroll", ()=>{
+      xLabelsViewport.scrollLeft = chartViewport.scrollLeft;
+    }, {passive:true});
+
+    xLabelsViewport.addEventListener("scroll", ()=>{
+      chartViewport.scrollLeft = xLabelsViewport.scrollLeft;
+    }, {passive:true});
   }
 
-  (function boot(){
-    initMonths();
+  (function init(){
+    syncKpi();
+    wireUi();
 
-    chart.canvas = el("chart");
-    chart.ctx = chart.canvas.getContext("2d");
-    chart.inner = el("chartInner");
-    chart.viewport = el("chartViewport");
-    chart.xLabelViewport = el("xLabelsViewport");
-    chart.xLabelRow = el("xLabels");
+    const ro = new ResizeObserver(()=>{
+      chart.resize();
+      chart.draw();
+    });
+    ro.observe(chartInner);
 
-    attachUIEvents();
-    attachScrollSync();
+    chart.resize();
+    chart.draw();
     attachViewportPanAndSelect();
-
-    syncAll(true);
   })();
 </script>
 </body>
