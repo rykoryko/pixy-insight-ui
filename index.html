@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Pixy インサイト</title>
   <style>
     :root{
@@ -11,43 +11,69 @@
       --text:#111827;
       --muted:#6b7280;
       --line:#e5e7eb;
+
       --pink:#fde2ea;
+      --pinkBorder: rgba(240, 182, 199, .38);
+
       --blue:#2563eb;
-      --grid:#e5e7eb;
-      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --blueSoft: rgba(37,99,235,.18);
+
+      --shadow: 0 10px 26px rgba(0,0,0,.08);
       --radius: 18px;
+
+      --chip:#e9eaef;
+      --chipOn:#4b5563;
+
+      --grid:#e5e7eb;
     }
-    *{box-sizing:border-box}
+
+    html{
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    *{ box-sizing:border-box; }
+
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", Arial, sans-serif;
-      color:var(--text);
       background:var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", Arial, sans-serif;
     }
+
     .app{
       max-width: 420px;
       margin: 0 auto;
-      padding: 18px 14px 24px;
+      padding: 16px 14px 26px;
     }
+
     .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      margin-top: 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 8px;
       margin-bottom: 4px;
     }
+
     .brand{
-      font-weight: 900; letter-spacing:.2px;
+      font-weight: 900;
       font-size: 22px;
+      letter-spacing:.2px;
     }
+
     .title{
       font-weight: 900;
       font-size: 20px;
+      letter-spacing:.1px;
     }
+
     .sectionTitle{
       margin-top: 18px;
       font-weight: 900;
       font-size: 22px;
       letter-spacing:.2px;
     }
+
     .divider{
       height:3px;
       background: #f0b6c7;
@@ -59,61 +85,87 @@
     .cardRow{
       display:flex;
       gap: 12px;
+      align-items:stretch;
     }
+
     .card{
       background: var(--card);
       border: 1px solid rgba(0,0,0,.05);
-      border-radius: 18px;
+      border-radius: var(--radius);
       box-shadow: 0 8px 18px rgba(0,0,0,.04);
       padding: 14px;
       flex: 1;
       min-width: 0;
     }
+
     .card.pink{
       background: var(--pink);
-      border-color: rgba(240, 182, 199, .35);
+      border-color: var(--pinkBorder);
     }
+
     .card h3{
-      margin: 0 0 8px;
+      margin:0 0 8px;
       font-size: 13px;
       color: var(--muted);
       font-weight: 900;
+      letter-spacing:.1px;
     }
+
     .bigMoney{
       font-weight: 1000;
-      font-size: 36px;
-      letter-spacing: .5px;
+      letter-spacing: .4px;
       color: var(--blue);
-      margin: 2px 0 4px;
+      margin: 2px 0 6px;
+      font-size: clamp(30px, 8.6vw, 38px);
+      line-height: 1.05;
     }
+
     .subLine{
-      display:flex; align-items:baseline; gap: 8px;
+      display:flex;
+      align-items:baseline;
+      gap: 8px;
       color: var(--muted);
       font-weight: 900;
       font-size: 12px;
     }
-    .subLine b{ color: var(--text); font-size: 13px; }
+    .subLine b{
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 1000;
+    }
+
+    .detailBtn{
+      appearance:none;
+      border:none;
+      text-align:left;
+      cursor:pointer;
+      width:100%;
+      background: var(--card);
+    }
+    .detailBtn:active{
+      transform: translateY(1px);
+    }
+
     .kpiGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px 12px;
       margin-top: 6px;
     }
-    .miniKpi{
-      border-radius: 12px;
-      padding: 6px 6px;
-    }
+
     .miniLabel{
       font-size: 11px;
       color: var(--muted);
       font-weight: 900;
       margin-bottom: 2px;
     }
+
     .miniVal{
       font-size: 22px;
       color: var(--blue);
       font-weight: 1000;
-      letter-spacing:.3px;
+      letter-spacing:.2px;
+      line-height: 1.05;
     }
 
     .toggleRow{
@@ -121,60 +173,68 @@
       gap: 10px;
       margin: 12px 0 10px;
     }
+
     .toggle{
       border: none;
       border-radius: 999px;
       padding: 10px 16px;
       font-weight: 1000;
       font-size: 14px;
-      background: #e9eaef;
+      background: var(--chip);
       color: #374151;
       cursor: pointer;
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.03);
     }
     .toggle.active{
-      background: #4b5563;
+      background: var(--chipOn);
       color: #fff;
     }
 
     .chartCard{
       background: var(--card);
       border: 1px solid rgba(0,0,0,.05);
-      border-radius: 18px;
+      border-radius: var(--radius);
       box-shadow: 0 8px 18px rgba(0,0,0,.04);
       padding: 10px 10px 12px;
       overflow: hidden;
     }
+
     .chartWrap{
       position:relative;
       height: 180px;
       margin-top: 4px;
       border-radius: 12px;
-      background: #ffffff;
+      background:#fff;
       overflow:hidden;
     }
+
     .chartViewport{
-      position:absolute; left:0; right:0; top:0; bottom:28px;
-      overflow-x:auto; overflow-y:hidden;
+      position:absolute;
+      left:0; right:0; top:0; bottom:28px;
+      overflow-x:auto;
+      overflow-y:hidden;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
-      cursor: grab;
+      touch-action: pan-y;
     }
     .chartViewport::-webkit-scrollbar{ display:none; }
+
     .chartInner{
       position:relative;
       height:100%;
-      width: 100%;
+      width:100%;
     }
+
     canvas{
       display:block;
       width:100%;
       height:100%;
     }
+
     .yLabels{
       position:absolute;
-      right: 6px;
-      top: 8px;
+      right: 8px;
+      top: 10px;
       bottom: 34px;
       display:flex;
       flex-direction:column;
@@ -183,18 +243,21 @@
       color: #9ca3af;
       font-weight: 900;
       pointer-events:none;
+      letter-spacing:.1px;
     }
+
     .xLabelsViewport{
       height: 28px;
       overflow-x:auto;
       overflow-y:hidden;
       -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
+      scrollbar-width:none;
+      user-select:none;
     }
     .xLabelsViewport::-webkit-scrollbar{ display:none; }
+
     .xLabels{
       display:flex;
-      gap: 0;
       padding: 0 8px;
       height: 28px;
       align-items:flex-end;
@@ -202,19 +265,18 @@
       font-weight: 900;
       font-size: 12px;
       white-space:nowrap;
-      user-select:none;
-      width: max-content;
+      width:max-content;
     }
     .xLabels span{
-      width: var(--slot, 44px);
+      width: var(--slot, 50px);
       text-align:center;
       flex: 0 0 auto;
     }
 
     .cursorLine{
       position:absolute;
-      top: 8px;
-      bottom: 8px;
+      top: 10px;
+      bottom: 10px;
       width:2px;
       background: rgba(37,99,235,.55);
       border-radius:999px;
@@ -222,18 +284,16 @@
       display:none;
       z-index: 3;
     }
+
     .tooltip{
       position:absolute;
-      min-width: 90px;
+      min-width: 88px;
       padding: 8px 10px;
       background:#fff;
       border:1px solid rgba(0,0,0,.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,.12);
+      box-shadow: 0 10px 26px rgba(0,0,0,.14);
       border-radius: 10px;
-      font-size: 12px;
-      font-weight:800;
-      color: var(--text);
-      transform: translate(-50%, -110%);
+      transform: translate(-50%, -112%);
       pointer-events:none;
       display:none;
       white-space:nowrap;
@@ -244,56 +304,69 @@
       font-weight: 1000;
       font-size: 16px;
       margin-bottom: 2px;
+      letter-spacing:.1px;
     }
     .tooltip .tVal{
       color: var(--muted);
       font-weight: 1000;
       font-size: 14px;
+      letter-spacing:.1px;
     }
 
-    .segRow{
+    .tabsRow{
       display:flex;
       gap: 10px;
-      margin-top: 12px;
-      margin-bottom: 10px;
+      margin-top: 10px;
     }
-    .seg{
+    .tab{
       border:none;
       border-radius:999px;
       padding: 10px 16px;
       font-weight: 1000;
-      background:#e9eaef;
-      color:#374151;
-      cursor:pointer;
       font-size: 14px;
+      background: var(--chip);
+      color: #374151;
+      cursor:pointer;
     }
-    .seg.active{
-      background:#4b5563;
+    .tab.active{
+      background: var(--chipOn);
       color:#fff;
     }
 
-    .progressCard{
+    .panelCard{
       background: var(--card);
       border: 1px solid rgba(0,0,0,.05);
-      border-radius: 18px;
+      border-radius: var(--radius);
       box-shadow: 0 8px 18px rgba(0,0,0,.04);
       padding: 14px 14px 12px;
+      margin-top: 10px;
     }
-    .progRow{
-      margin: 14px 0 10px;
-    }
-    .progHead{
-      display:flex; justify-content:space-between; align-items:center;
+
+    .panelTitle{
       font-weight: 1000;
-      color: var(--text);
-      margin-bottom: 8px;
+      color:#374151;
+      margin-bottom: 10px;
+      letter-spacing:.1px;
     }
-    .progHead .lab{
+
+    .ratioRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin: 10px 0 8px;
+      font-weight: 1000;
+    }
+    .ratioRow .lab{
       font-size: 15px;
+      color: var(--text);
+      min-width: 86px;
     }
-    .progHead .pct{
+    .ratioRow .pct{
       font-size: 18px;
+      color: var(--text);
     }
+
     .bar{
       height: 10px;
       background: #e5e7eb;
@@ -308,26 +381,27 @@
       border-radius: 999px;
     }
 
-    .tabsRow{
-      display:flex; gap: 10px;
-      margin-top: 10px;
+    .ageRow{
+      margin: 14px 0 10px;
     }
-    .tab{
-      border:none;
-      border-radius: 999px;
-      padding: 10px 16px;
+    .ageHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
       font-weight: 1000;
-      font-size: 14px;
-      background: #e9eaef;
-      color: #374151;
-      cursor:pointer;
+      margin-bottom: 8px;
     }
-    .tab.active{
-      background: #4b5563;
-      color: #fff;
+    .ageHead .lab{ font-size: 15px; }
+    .ageHead .pct{ font-size: 18px; }
+
+    @media (max-width: 360px){
+      .cardRow{ gap:10px; }
+      .miniVal{ font-size: 20px; }
+      .toggle, .tab{ padding: 10px 14px; }
     }
   </style>
 </head>
+
 <body>
   <div class="app">
     <div class="topbar">
@@ -339,218 +413,249 @@
     <div class="sectionTitle">メインデータ</div>
     <div class="divider"></div>
 
-    <div class="cardRow" style="margin-bottom:10px">
+    <div class="cardRow">
       <div class="card pink">
         <h3>今月の報酬金</h3>
         <div class="bigMoney" id="kpiMoney">¥ 100,000</div>
         <div class="subLine">前月比 <b id="kpiMoM">101%</b></div>
       </div>
 
-      <button class="card" id="detailCardBtn" style="text-align:left;border:1px solid rgba(0,0,0,.05);">
-        <h3>鑑定データ詳細</h3>
-        <div class="kpiGrid">
-          <div class="miniKpi">
-            <div class="miniLabel">リピート件数</div>
-            <div class="miniVal" id="kpiRepeatCnt">13</div>
-          </div>
-          <div class="miniKpi">
-            <div class="miniLabel">リピート人数</div>
-            <div class="miniVal" id="kpiRepeatUsers">9</div>
-          </div>
-          <div class="miniKpi">
-            <div class="miniLabel">鑑定件数</div>
-            <div class="miniVal" id="kpiKanteiCnt">76</div>
-          </div>
-          <div class="miniKpi">
-            <div class="miniLabel">鑑定人数</div>
-            <div class="miniVal" id="kpiKanteiUsers">63</div>
-          </div>
-        </div>
-      </button>
-    </div>
-
-    <div id="viewKpi">
-      <div class="toggleRow" aria-label="グラフ切替">
-        <button class="toggle active" data-mode="hour">時間別</button>
-        <button class="toggle" data-mode="weekday">曜日別</button>
-        <button class="toggle" data-mode="day">日別</button>
-      </div>
-
-      <div class="chartCard">
-        <div class="chartWrap">
-          <div class="chartViewport" id="chartViewport">
-            <div class="chartInner" id="chartInner">
-              <canvas id="chart"></canvas>
-              <div class="cursorLine" id="cursorLine"></div>
-              <div class="tooltip" id="tooltip">
-                <div class="tLabel" id="tipLabel">02時</div>
-                <div class="tVal" id="tipValue">¥ 800</div>
-              </div>
+      <div class="card" style="padding:0">
+        <button class="detailBtn" id="detailCardBtn" style="padding:14px;border-radius:18px;">
+          <h3>鑑定データ詳細</h3>
+          <div class="kpiGrid">
+            <div>
+              <div class="miniLabel">リピート件数</div>
+              <div class="miniVal" id="kpiRepeatCnt">13</div>
+            </div>
+            <div>
+              <div class="miniLabel">リピート人数</div>
+              <div class="miniVal" id="kpiRepeatUsers">9</div>
+            </div>
+            <div>
+              <div class="miniLabel">鑑定件数</div>
+              <div class="miniVal" id="kpiKanteiCnt">76</div>
+            </div>
+            <div>
+              <div class="miniLabel">鑑定人数</div>
+              <div class="miniVal" id="kpiKanteiUsers">63</div>
             </div>
           </div>
-
-          <div class="yLabels">
-            <div id="yTop">1,155</div>
-            <div id="yMid">770</div>
-            <div id="yBot">385</div>
-          </div>
-        </div>
-
-        <div class="xLabelsViewport" id="xLabelsViewport">
-          <div class="xLabels" id="xLabels"></div>
-        </div>
+        </button>
       </div>
-
-      <div class="sectionTitle" style="margin-top:14px">詳細データ</div>
-      <div class="divider"></div>
-
-      <div class="tabsRow">
-        <button class="tab active" data-tab="user">ユーザー分析</button>
-        <button class="tab" data-tab="kanteishi">鑑定師分析</button>
-      </div>
-
-      <div id="tabUser">
-        <div class="progressCard" style="margin-top:10px">
-          <div style="font-weight:1000;margin-bottom:10px;color:#374151">年齢構成比</div>
-
-          <div class="progRow">
-            <div class="progHead"><div class="lab">18 - 24</div><div class="pct" id="p1824">41.9%</div></div>
-            <div class="bar"><i id="b1824" style="width:41.9%"></i></div>
-          </div>
-
-          <div class="progRow">
-            <div class="progHead"><div class="lab">25 - 34</div><div class="pct" id="p2534">30.9%</div></div>
-            <div class="bar"><i id="b2534" style="width:30.9%"></i></div>
-          </div>
-
-          <div class="progRow">
-            <div class="progHead"><div class="lab">35 - 44</div><div class="pct" id="p3544">12.7%</div></div>
-            <div class="bar"><i id="b3544" style="width:12.7%"></i></div>
-          </div>
-
-          <div class="progRow" style="margin-bottom:0">
-            <div class="progHead"><div class="lab">45 - 54</div><div class="pct" id="p4554">9.9%</div></div>
-            <div class="bar"><i id="b4554" style="width:9.9%"></i></div>
-          </div>
-        </div>
-      </div>
-
-      <div id="tabKanteishi" style="display:none">
-        <div class="progressCard" style="margin-top:10px">
-          <div style="font-weight:1000;color:#374151">（ここは仮）鑑定師分析</div>
-          <div style="color:#6b7280;font-weight:900;margin-top:6px;font-size:13px">ここに鑑定師別の内訳を後で追加できます。</div>
-        </div>
-      </div>
-
     </div>
+
+    <div class="toggleRow" aria-label="グラフ切替">
+      <button class="toggle active" data-mode="hour">時間別</button>
+      <button class="toggle" data-mode="weekday">曜日別</button>
+      <button class="toggle" data-mode="day">日別</button>
+    </div>
+
+    <div class="chartCard">
+      <div class="chartWrap">
+        <div class="chartViewport" id="chartViewport">
+          <div class="chartInner" id="chartInner">
+            <canvas id="chart"></canvas>
+            <div class="cursorLine" id="cursorLine"></div>
+            <div class="tooltip" id="tooltip">
+              <div class="tLabel" id="tipLabel">02時</div>
+              <div class="tVal" id="tipValue">¥ 800</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="yLabels">
+          <div id="yTop">1,155</div>
+          <div id="yMid">770</div>
+          <div id="yBot">385</div>
+        </div>
+      </div>
+
+      <div class="xLabelsViewport" id="xLabelsViewport">
+        <div class="xLabels" id="xLabels"></div>
+      </div>
+    </div>
+
+    <div class="sectionTitle" id="detailSection">詳細データ</div>
+    <div class="divider"></div>
+
+    <div class="tabsRow">
+      <button class="tab active" data-tab="user">ユーザー分析</button>
+      <button class="tab" data-tab="kanteishi">鑑定師分析</button>
+    </div>
+
+    <div id="tabUser">
+      <div class="panelCard">
+        <div class="panelTitle">男女比率</div>
+
+        <div class="ratioRow">
+          <div class="lab">女性</div>
+          <div class="pct" id="gFemale">0%</div>
+        </div>
+        <div class="bar"><i id="bFemale" style="width:0%"></i></div>
+
+        <div class="ratioRow" style="margin-top:14px;">
+          <div class="lab">男性</div>
+          <div class="pct" id="gMale">0%</div>
+        </div>
+        <div class="bar"><i id="bMale" style="width:0%"></i></div>
+
+        <div style="margin-top:10px;color:#6b7280;font-weight:900;font-size:12px;letter-spacing:.1px;">
+          ※ここは「ユーザーマスタ×鑑定ログ」から計算した値を入れる想定
+        </div>
+      </div>
+
+      <div class="panelCard">
+        <div class="panelTitle">年齢構成比</div>
+
+        <div class="ageRow">
+          <div class="ageHead"><div class="lab">-29</div><div class="pct" id="a1">0%</div></div>
+          <div class="bar"><i id="ab1" style="width:0%"></i></div>
+        </div>
+
+        <div class="ageRow">
+          <div class="ageHead"><div class="lab">30-39</div><div class="pct" id="a2">0%</div></div>
+          <div class="bar"><i id="ab2" style="width:0%"></i></div>
+        </div>
+
+        <div class="ageRow">
+          <div class="ageHead"><div class="lab">40-49</div><div class="pct" id="a3">0%</div></div>
+          <div class="bar"><i id="ab3" style="width:0%"></i></div>
+        </div>
+
+        <div class="ageRow">
+          <div class="ageHead"><div class="lab">50-59</div><div class="pct" id="a4">0%</div></div>
+          <div class="bar"><i id="ab4" style="width:0%"></i></div>
+        </div>
+
+        <div class="ageRow">
+          <div class="ageHead"><div class="lab">60-69</div><div class="pct" id="a5">0%</div></div>
+          <div class="bar"><i id="ab5" style="width:0%"></i></div>
+        </div>
+
+        <div class="ageRow" style="margin-bottom:0;">
+          <div class="ageHead"><div class="lab">70-</div><div class="pct" id="a6">0%</div></div>
+          <div class="bar"><i id="ab6" style="width:0%"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tabKanteishi" style="display:none">
+      <div class="panelCard">
+        <div class="panelTitle">鑑定師分析</div>
+        <div style="color:#6b7280;font-weight:900;font-size:13px;letter-spacing:.1px;">
+          ここは次段階で「鑑定師ごとの差分」が出るように拡張できます。
+        </div>
+      </div>
+    </div>
+
   </div>
 
 <script>
-  // ====== データ（仮） ======
   const APP = {
-    state: { month: "12月", mainTab: "kpi", chartMode: "hour", cursorIndex: null },
+    state: { month: "12月", chartMode: "hour", cursorIndex: null },
     dataByMonth: {
       "12月": {
         money: 100000, mom: 101,
         repeatCnt: 13, repeatUsers: 9,
         kanteiCnt: 76, kanteiUsers: 63,
+        gender: { female: 62.0, male: 38.0 },
+        ageBuckets: { a1: 18.0, a2: 31.0, a3: 21.0, a4: 14.0, a5: 10.0, a6: 6.0 },
         chart: {
           hour:    { labels: ["02時","03時","04時","05時","06時"], values: [820,860,780,815,790] },
           weekday: { labels: ["月","火","水","木","金","土","日"], values: [700,820,760,810,900,740,680] },
           day:     { labels: ["4日","5日","6日","7日","8日","9日","14日","15日","16日","17日","18日","19日"], values: [900,820,830,810,890,850,1100,980,918,900,780,650] }
-        },
-        age: { "18-24": 41.9, "25-34": 30.9, "35-44": 12.7, "45-54": 9.9 }
+        }
       }
     }
   };
 
-  // ====== DOM ======
   const $ = (q)=>document.querySelector(q);
-  const kpiMoney = $("#kpiMoney");
-  const kpiMoM = $("#kpiMoM");
-  const kpiRepeatCnt = $("#kpiRepeatCnt");
-  const kpiRepeatUsers = $("#kpiRepeatUsers");
-  const kpiKanteiCnt = $("#kpiKanteiCnt");
-  const kpiKanteiUsers = $("#kpiKanteiUsers");
 
-  const chartCanvas = $("#chart");
-  const chartViewport = $("#chartViewport");
-  const chartInner = $("#chartInner");
-  const cursorLine = $("#cursorLine");
-  const tooltip = $("#tooltip");
-  const tipLabel = $("#tipLabel");
-  const tipValue = $("#tipValue");
-
-  const xLabelsViewport = $("#xLabelsViewport");
-  const xLabels = $("#xLabels");
-
-  // ====== KPI反映 ======
   function fmtYen(n){
-    const s = Math.round(n).toLocaleString("ja-JP");
-    return "¥ " + s;
+    return "¥ " + Math.round(n).toLocaleString("ja-JP");
   }
-  function syncKpi(){
+
+  function setPct(el, barEl, v){
+    const vv = Math.max(0, Math.min(100, Number(v)||0));
+    el.textContent = vv.toFixed(1).replace(/\.0$/, "") + "%";
+    barEl.style.width = vv + "%";
+  }
+
+  function syncKpiAndUser(){
     const d = APP.dataByMonth[APP.state.month];
-    kpiMoney.textContent = fmtYen(d.money);
-    kpiMoM.textContent = d.mom + "%";
-    kpiRepeatCnt.textContent = d.repeatCnt.toLocaleString("ja-JP");
-    kpiRepeatUsers.textContent = d.repeatUsers.toLocaleString("ja-JP");
-    kpiKanteiCnt.textContent = d.kanteiCnt.toLocaleString("ja-JP");
-    kpiKanteiUsers.textContent = d.kanteiUsers.toLocaleString("ja-JP");
 
-    // 年齢
-    const age = d.age;
-    $("#p1824").textContent = age["18-24"] + "%"; $("#b1824").style.width = age["18-24"] + "%";
-    $("#p2534").textContent = age["25-34"] + "%"; $("#b2534").style.width = age["25-34"] + "%";
-    $("#p3544").textContent = age["35-44"] + "%"; $("#b3544").style.width = age["35-44"] + "%";
-    $("#p4554").textContent = age["45-54"] + "%"; $("#b4554").style.width = age["45-54"] + "%";
+    $("#kpiMoney").textContent = fmtYen(d.money);
+    $("#kpiMoM").textContent = d.mom + "%";
+    $("#kpiRepeatCnt").textContent = d.repeatCnt.toLocaleString("ja-JP");
+    $("#kpiRepeatUsers").textContent = d.repeatUsers.toLocaleString("ja-JP");
+    $("#kpiKanteiCnt").textContent = d.kanteiCnt.toLocaleString("ja-JP");
+    $("#kpiKanteiUsers").textContent = d.kanteiUsers.toLocaleString("ja-JP");
+
+    setPct($("#gFemale"), $("#bFemale"), d.gender.female);
+    setPct($("#gMale"), $("#bMale"), d.gender.male);
+
+    const a = d.ageBuckets;
+    setPct($("#a1"), $("#ab1"), a.a1);
+    setPct($("#a2"), $("#ab2"), a.a2);
+    setPct($("#a3"), $("#ab3"), a.a3);
+    setPct($("#a4"), $("#ab4"), a.a4);
+    setPct($("#a5"), $("#ab5"), a.a5);
+    setPct($("#a6"), $("#ab6"), a.a6);
   }
 
-  // ====== チャート描画 ======
   const chart = {
-    canvas: chartCanvas,
-    viewport: chartViewport,
-    inner: chartInner,
-    ctx: chartCanvas.getContext("2d"),
+    canvas: $("#chart"),
+    viewport: $("#chartViewport"),
+    inner: $("#chartInner"),
+    ctx: null,
     w: 0, h: 0,
-    slot: 52,
+    slot: 50,
     padding: { top: 16, right: 14, bottom: 16, left: 14 },
     points: [],
-    xLabelRow: xLabels,
-
+    init(){
+      this.ctx = this.canvas.getContext("2d");
+      this.resize();
+    },
     resize(){
       const rect = this.inner.getBoundingClientRect();
-      this.w = Math.max(10, rect.width);
-      this.h = Math.max(10, rect.height);
+      const w = Math.max(10, rect.width);
+      const h = Math.max(10, rect.height);
+      this.w = w; this.h = h;
+
       const dpr = window.devicePixelRatio || 1;
-      this.canvas.width = Math.floor(this.w * dpr);
-      this.canvas.height = Math.floor(this.h * dpr);
-      this.canvas.style.width = this.w + "px";
-      this.canvas.style.height = this.h + "px";
+      this.canvas.width = Math.floor(w * dpr);
+      this.canvas.height = Math.floor(h * dpr);
+      this.canvas.style.width = w + "px";
+      this.canvas.style.height = h + "px";
       this.ctx.setTransform(dpr,0,0,dpr,0,0);
     },
     setInnerWidth(n){
       const innerW = (n-1)*this.slot + this.padding.left + this.padding.right;
       this.inner.style.width = Math.max(innerW, this.viewport.clientWidth) + "px";
-      this.xLabelRow.style.setProperty("--slot", this.slot + "px");
+      $("#xLabels").style.setProperty("--slot", this.slot + "px");
     },
     draw(){
       const ctx = this.ctx;
-      const {w,h,padding} = this;
+      const w = this.w, h = this.h;
+      const p = this.padding;
+
+      const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
+      const labels = d.labels;
+      const values = d.values;
+      const n = values.length;
+
+      this.setInnerWidth(n);
+      this.resize();
+
       ctx.clearRect(0,0,w,h);
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0,0,w,h);
 
-      const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
-      const values = d.values;
-      const labels = d.labels;
-      const n = values.length;
-
-      this.setInnerWidth(n);
-
       const maxV = Math.max(...values);
       const minV = Math.min(...values);
       const padV = Math.max(1, (maxV - minV) * 0.18);
+
       const topV = Math.ceil((maxV + padV)/5)*5;
       const botV = Math.floor((minV - padV)/5)*5;
 
@@ -560,18 +665,18 @@
 
       const mapY = (v)=>{
         const t = (v - botV) / (topV - botV);
-        return (h - padding.bottom - 8) - t * (h - padding.top - padding.bottom - 16);
+        return (h - p.bottom - 8) - t * (h - p.top - p.bottom - 16);
       };
-      const mapX = (i)=> padding.left + i * this.slot;
+      const mapX = (i)=> p.left + i * this.slot;
 
-      const gridYs = [ padding.top + 8, (h + padding.top - padding.bottom)/2, h - padding.bottom - 8 ];
+      const gridYs = [ p.top + 8, (h + p.top - p.bottom)/2, h - p.bottom - 8 ];
       ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--grid").trim() || "#e5e7eb";
       ctx.lineWidth = 1;
       ctx.setLineDash([3,4]);
       gridYs.forEach(y=>{
         ctx.beginPath();
-        ctx.moveTo(padding.left, y);
-        ctx.lineTo(w - padding.right, y);
+        ctx.moveTo(p.left, y);
+        ctx.lineTo(w - p.right, y);
         ctx.stroke();
       });
       ctx.setLineDash([]);
@@ -582,35 +687,35 @@
       }
       this.points = pts;
 
-      const grad = ctx.createLinearGradient(0, padding.top, 0, h);
+      const grad = ctx.createLinearGradient(0, p.top, 0, h);
       grad.addColorStop(0, "rgba(37,99,235,.20)");
       grad.addColorStop(1, "rgba(37,99,235,0)");
       ctx.fillStyle = grad;
 
       ctx.beginPath();
-      pts.forEach((p, idx)=>{
-        if(idx===0) ctx.moveTo(p.x, p.y);
-        else ctx.lineTo(p.x, p.y);
+      pts.forEach((pt, idx)=>{
+        if(idx===0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
       });
-      ctx.lineTo(pts[pts.length-1].x, h - padding.bottom);
-      ctx.lineTo(pts[0].x, h - padding.bottom);
+      ctx.lineTo(pts[pts.length-1].x, h - p.bottom);
+      ctx.lineTo(pts[0].x, h - p.bottom);
       ctx.closePath();
       ctx.fill();
 
       ctx.beginPath();
-      pts.forEach((p, idx)=>{
-        if(idx===0) ctx.moveTo(p.x, p.y);
-        else ctx.lineTo(p.x, p.y);
+      pts.forEach((pt, idx)=>{
+        if(idx===0) ctx.moveTo(pt.x, pt.y);
+        else ctx.lineTo(pt.x, pt.y);
       });
       ctx.lineWidth = 2;
       ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--blue").trim() || "#2563eb";
       ctx.stroke();
 
       const idx = (APP.state.cursorIndex==null ? Math.floor(n/2) : APP.state.cursorIndex);
-      const p = pts[Math.max(0,Math.min(n-1,idx))];
+      const sel = pts[Math.max(0,Math.min(n-1,idx))];
 
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
+      ctx.arc(sel.x, sel.y, 4, 0, Math.PI*2);
       ctx.fillStyle = "#2563eb";
       ctx.fill();
       ctx.lineWidth = 2;
@@ -618,13 +723,13 @@
       ctx.stroke();
 
       renderXLabels(labels);
-      renderTooltip(p.x, p.y, labels[p.i], p.v);
-      autoScrollToX(p.x);
+      renderTooltip(sel.x, sel.y, labels[sel.i], sel.v);
+      syncScrollbars();
     }
   };
 
   function renderXLabels(labels){
-    const row = chart.xLabelRow;
+    const row = $("#xLabels");
     row.innerHTML = "";
     labels.forEach(lab=>{
       const sp = document.createElement("span");
@@ -634,100 +739,49 @@
   }
 
   function renderTooltip(x, y, label, value){
+    const cursorLine = $("#cursorLine");
+    const tooltip = $("#tooltip");
     cursorLine.style.display = "block";
     tooltip.style.display = "block";
 
     cursorLine.style.left = x + "px";
 
-    tipLabel.textContent = label;
-    tipValue.textContent = fmtYen(value);
+    $("#tipLabel").textContent = label;
+    $("#tipValue").textContent = fmtYen(value);
 
     const minX = 54;
     const maxX = chart.inner.clientWidth - 54;
     const clampedX = Math.max(minX, Math.min(maxX, x));
-
     tooltip.style.left = clampedX + "px";
-    tooltip.style.top = (y) + "px";
-  }
-
-  function autoScrollToX(x){
-    const vp = chart.viewport;
-    const left = vp.scrollLeft;
-    const w = vp.clientWidth;
-    const target = x - w*0.5;
-    const maxScroll = vp.scrollWidth - w;
-    const next = Math.max(0, Math.min(maxScroll, target));
-    if(Math.abs(next-left) > 1){
-      try{ vp.scrollLeft = next; }catch(_){}
-    }
-    try{ xLabelsViewport.scrollLeft = vp.scrollLeft; }catch(_){}
+    tooltip.style.top = y + "px";
   }
 
   function pickIndexFromClientX(clientX){
     const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
     const n = d.values.length;
+
     const rect = chart.viewport.getBoundingClientRect();
     const xInViewport = clientX - rect.left;
     const xInInner = xInViewport + chart.viewport.scrollLeft;
+
     const x0 = chart.padding.left;
-    const dx = chart.slot;
-    const i = Math.round((xInInner - x0) / dx);
+    const i = Math.round((xInInner - x0) / chart.slot);
     return Math.max(0, Math.min(n-1, i));
   }
 
-  function attachViewportPanAndSelect(){
-    const vp = chart.viewport;
-    let down = false;
-    let moved = false;
-    let startX = 0;
-    let startScroll = 0;
+  function syncScrollbars(){
+    const vp = $("#chartViewport");
+    const xvp = $("#xLabelsViewport");
+    xvp.scrollLeft = vp.scrollLeft;
+  }
 
-    vp.addEventListener("pointerdown", (e)=>{
-      // タッチはネイティブスクロール優先（ここでは何もしない）
-      if(e.pointerType !== "mouse") return;
-      if(e.button !== 0) return;
+  function attachInteractions(){
+    const vp = $("#chartViewport");
+    const xvp = $("#xLabelsViewport");
 
-      down = true;
-      moved = false;
-      startX = e.clientX;
-      startScroll = vp.scrollLeft;
-      vp.setPointerCapture(e.pointerId);
-      vp.style.cursor = "grabbing";
-    });
+    vp.addEventListener("scroll", ()=>{ xvp.scrollLeft = vp.scrollLeft; }, {passive:true});
+    xvp.addEventListener("scroll", ()=>{ vp.scrollLeft = xvp.scrollLeft; }, {passive:true});
 
-    vp.addEventListener("pointermove", (e)=>{
-      if(!down) return;
-      const dx = e.clientX - startX;
-      if(Math.abs(dx) > 3) moved = true;
-      vp.scrollLeft = startScroll - dx;
-      xLabelsViewport.scrollLeft = vp.scrollLeft;
-    });
-
-    vp.addEventListener("pointerup", (e)=>{
-      if(!down) return;
-      down = false;
-      vp.style.cursor = "grab";
-      try{ vp.releasePointerCapture(e.pointerId);}catch(_){}
-      // 動いてないなら「クリック」とみなして点を選ぶ
-      if(!moved){
-        APP.state.cursorIndex = pickIndexFromClientX(e.clientX);
-        chart.draw();
-      }
-    });
-
-    vp.addEventListener("pointercancel", (e)=>{ down = false; });
-
-    // タッチでタップしたときに点を選べるように（スクロール後の誤爆はほぼ起きない）
-    vp.addEventListener("click", (e)=>{
-      if(e.detail === 0) return; // programmatic
-      // マウスのクリックはpointerup側で処理済みなので二重にしない
-      // ただし一部環境でpointerupが来ない場合の保険
-      if(e.pointerType === "mouse") return;
-      APP.state.cursorIndex = pickIndexFromClientX(e.clientX);
-      chart.draw();
-    }, {passive:true});
-
-    // スマホ（指でなぞって値を出す）
     vp.addEventListener("touchstart", (e)=>{
       const t = e.touches && e.touches[0];
       if(!t) return;
@@ -742,20 +796,28 @@
       chart.draw();
     }, {passive:true});
 
-  }
+    vp.addEventListener("pointerdown", (e)=>{
+      if(e.pointerType !== "mouse") return;
+      if(e.button !== 0) return;
+      APP.state.cursorIndex = pickIndexFromClientX(e.clientX);
+      chart.draw();
+    });
 
-  function syncChartMode(mode){
-    APP.state.chartMode = mode;
-    APP.state.cursorIndex = null;
-    chart.draw();
-  }
+    const detailBtn = $("#detailCardBtn");
+    const detailSec = $("#detailSection");
+    if(detailBtn && detailSec){
+      detailBtn.addEventListener("click", ()=>{
+        detailSec.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    }
 
-  function wireUi(){
     document.querySelectorAll(".toggle").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         document.querySelectorAll(".toggle").forEach(b=>b.classList.remove("active"));
         btn.classList.add("active");
-        syncChartMode(btn.dataset.mode);
+        APP.state.chartMode = btn.dataset.mode;
+        APP.state.cursorIndex = null;
+        chart.draw();
       });
     });
 
@@ -768,30 +830,23 @@
         $("#tabKanteishi").style.display = (tab==="kanteishi") ? "" : "none";
       });
     });
-
-    chartViewport.addEventListener("scroll", ()=>{
-      xLabelsViewport.scrollLeft = chartViewport.scrollLeft;
-    }, {passive:true});
-
-    xLabelsViewport.addEventListener("scroll", ()=>{
-      chartViewport.scrollLeft = xLabelsViewport.scrollLeft;
-    }, {passive:true});
   }
 
-  (function init(){
-    syncKpi();
-    wireUi();
+  function init(){
+    syncKpiAndUser();
+    chart.init();
+    attachInteractions();
 
     const ro = new ResizeObserver(()=>{
       chart.resize();
       chart.draw();
     });
-    ro.observe(chartInner);
+    ro.observe($("#chartInner"));
 
-    chart.resize();
     chart.draw();
-    attachViewportPanAndSelect();
-  })();
+  }
+
+  init();
 </script>
 </body>
 </html>
