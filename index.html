@@ -3,850 +3,793 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Pixy インサイト</title>
+  <title>ピクシーインサイトUI</title>
   <style>
     :root{
-      --bg:#f7f7fb;
+      --bg:#f5f6fb;
       --card:#ffffff;
-      --text:#111827;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-
-      --pink:#fde2ea;
-      --pinkBorder: rgba(240, 182, 199, .38);
-
+      --ink:#0f172a;
+      --muted:#64748b;
+      --line:#e6e9f5;
       --blue:#2563eb;
-      --blueSoft: rgba(37,99,235,.18);
-
-      --shadow: 0 10px 26px rgba(0,0,0,.08);
-      --radius: 18px;
-
-      --chip:#e9eaef;
-      --chipOn:#4b5563;
-
-      --grid:#e5e7eb;
+      --blue2:#1d4ed8;
+      --pink:#ffe3ec;
+      --pill:#e9ecf5;
+      --pillOn:#424b5a;
+      --shadow:0 12px 30px rgba(15,23,42,.10);
+      --r:18px;
+      --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
     }
-
-    html{
-      -webkit-text-size-adjust: 100%;
-      text-size-adjust: 100%;
-    }
-
-    *{ box-sizing:border-box; }
-
+    *{box-sizing:border-box}
     body{
       margin:0;
       background:var(--bg);
-      color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Noto Sans JP", Arial, sans-serif;
+      color:var(--ink);
+      font-family:var(--font);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
     }
-
-    .app{
-      max-width: 420px;
-      margin: 0 auto;
-      padding: 16px 14px 26px;
-    }
-
+    button{font-family:inherit}
+    .wrap{max-width:520px;margin:0 auto;padding:16px 14px 28px}
     .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-top: 8px;
-      margin-bottom: 4px;
+      position:sticky;top:0;z-index:30;
+      padding:10px 6px 12px;
+      background:linear-gradient(to bottom, var(--bg) 70%, rgba(245,246,251,0));
+      backdrop-filter:saturate(1.1) blur(6px);
     }
-
-    .brand{
-      font-weight: 900;
-      font-size: 22px;
-      letter-spacing:.2px;
+    .toprow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .title{font-weight:800;font-size:18px;letter-spacing:.02em}
+    .sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .monthRow{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}
+    .chip{
+      border:0;background:var(--pill);color:#111827;
+      padding:7px 12px;border-radius:999px;font-size:13px;font-weight:700;
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,.06);
     }
-
-    .title{
-      font-weight: 900;
-      font-size: 20px;
-      letter-spacing:.1px;
-    }
-
-    .sectionTitle{
-      margin-top: 18px;
-      font-weight: 900;
-      font-size: 22px;
-      letter-spacing:.2px;
-    }
-
-    .divider{
-      height:3px;
-      background: #f0b6c7;
-      border-radius: 999px;
-      margin: 10px 0 14px;
-      opacity:.6;
-    }
-
-    .cardRow{
-      display:flex;
-      gap: 12px;
-      align-items:stretch;
-    }
-
+    .chip.on{background:#fff;box-shadow: inset 0 0 0 2px rgba(37,99,235,.20)}
+    h2{margin:14px 6px 6px;font-size:18px}
+    .divider{height:3px;background:#f3a6bf;border-radius:99px;margin:0 6px 14px;opacity:.75}
+    .kpiRow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:0 2px 12px}
     .card{
-      background: var(--card);
-      border: 1px solid rgba(0,0,0,.05);
-      border-radius: var(--radius);
-      box-shadow: 0 8px 18px rgba(0,0,0,.04);
-      padding: 14px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .card.pink{
-      background: var(--pink);
-      border-color: var(--pinkBorder);
-    }
-
-    .card h3{
-      margin:0 0 8px;
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 900;
-      letter-spacing:.1px;
-    }
-
-    .bigMoney{
-      font-weight: 1000;
-      letter-spacing: .4px;
-      color: var(--blue);
-      margin: 2px 0 6px;
-      font-size: clamp(30px, 8.6vw, 38px);
-      line-height: 1.05;
-    }
-
-    .subLine{
-      display:flex;
-      align-items:baseline;
-      gap: 8px;
-      color: var(--muted);
-      font-weight: 900;
-      font-size: 12px;
-    }
-    .subLine b{
-      color: var(--text);
-      font-size: 13px;
-      font-weight: 1000;
-    }
-
-    .detailBtn{
-      appearance:none;
-      border:none;
+      background:var(--card);
+      border-radius:var(--r);
+      border:1px solid rgba(15,23,42,.08);
+      box-shadow:var(--shadow);
+      padding:14px 14px;
       text-align:left;
-      cursor:pointer;
-      width:100%;
-      background: var(--card);
     }
-    .detailBtn:active{
-      transform: translateY(1px);
+    .cardBtn{appearance:none;border:0;cursor:pointer}
+    .cardPink{background:var(--pink);border-color:rgba(244,114,182,.30)}
+    .cardOutline{border:2px solid rgba(15,23,42,.85);box-shadow:0 10px 26px rgba(15,23,42,.08)}
+    .kpiLabel{font-size:12px;color:rgba(15,23,42,.7);font-weight:800}
+    .kpiMoney{
+      margin-top:8px;
+      font-weight:900;
+      color:var(--blue);
+      letter-spacing:.01em;
+      font-size:34px;
+      line-height:1.1;
     }
-
+    .kpiSub{margin-top:10px;font-size:12px;color:rgba(15,23,42,.65);font-weight:800}
+    .kpiSub b{color:rgba(15,23,42,.9)}
     .kpiGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 12px;
-      margin-top: 6px;
+      display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px
     }
-
-    .miniLabel{
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 900;
-      margin-bottom: 2px;
+    .miniLabel{font-size:11px;color:rgba(15,23,42,.6);font-weight:800}
+    .miniVal{font-size:22px;font-weight:900;color:var(--blue);margin-top:2px}
+    .segRow{display:flex;gap:10px;justify-content:center;margin:8px 0 10px}
+    .seg{
+      border:0;border-radius:999px;padding:10px 16px;
+      background:var(--pill);color:#111827;font-weight:900;font-size:14px;
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,.06);
     }
-
-    .miniVal{
-      font-size: 22px;
-      color: var(--blue);
-      font-weight: 1000;
-      letter-spacing:.2px;
-      line-height: 1.05;
-    }
-
-    .toggleRow{
-      display:flex;
-      gap: 10px;
-      margin: 12px 0 10px;
-    }
-
-    .toggle{
-      border: none;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-weight: 1000;
-      font-size: 14px;
-      background: var(--chip);
-      color: #374151;
-      cursor: pointer;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.03);
-    }
-    .toggle.active{
-      background: var(--chipOn);
-      color: #fff;
-    }
-
-    .chartCard{
-      background: var(--card);
-      border: 1px solid rgba(0,0,0,.05);
-      border-radius: var(--radius);
-      box-shadow: 0 8px 18px rgba(0,0,0,.04);
-      padding: 10px 10px 12px;
-      overflow: hidden;
-    }
-
+    .seg.on{background:var(--pillOn);color:#fff}
     .chartWrap{
+      background:var(--card);
+      border:1px solid rgba(15,23,42,.08);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+      padding:12px 12px 10px;
+      margin:0 2px 18px;
       position:relative;
-      height: 180px;
-      margin-top: 4px;
-      border-radius: 12px;
-      background:#fff;
       overflow:hidden;
     }
-
     .chartViewport{
-      position:absolute;
-      left:0; right:0; top:0; bottom:28px;
-      overflow-x:auto;
-      overflow-y:hidden;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      touch-action: pan-y;
-    }
-    .chartViewport::-webkit-scrollbar{ display:none; }
-
-    .chartInner{
       position:relative;
-      height:100%;
-      width:100%;
-    }
-
-    canvas{
-      display:block;
-      width:100%;
-      height:100%;
-    }
-
-    .yLabels{
-      position:absolute;
-      right: 8px;
-      top: 10px;
-      bottom: 34px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      font-size: 12px;
-      color: #9ca3af;
-      font-weight: 900;
-      pointer-events:none;
-      letter-spacing:.1px;
-    }
-
-    .xLabelsViewport{
-      height: 28px;
-      overflow-x:auto;
-      overflow-y:hidden;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width:none;
+      height:190px;
+      border-radius:18px;
+      background:linear-gradient(180deg, rgba(37,99,235,.06), rgba(37,99,235,0));
+      touch-action:pan-y; /* 横操作はイベントに、縦はスクロールに */
       user-select:none;
     }
-    .xLabelsViewport::-webkit-scrollbar{ display:none; }
-
-    .xLabels{
-      display:flex;
-      padding: 0 8px;
-      height: 28px;
-      align-items:flex-end;
-      color: #9ca3af;
-      font-weight: 900;
-      font-size: 12px;
-      white-space:nowrap;
-      width:max-content;
-    }
-    .xLabels span{
-      width: var(--slot, 50px);
-      text-align:center;
-      flex: 0 0 auto;
-    }
-
-    .cursorLine{
-      position:absolute;
-      top: 10px;
-      bottom: 10px;
-      width:2px;
-      background: rgba(37,99,235,.55);
-      border-radius:999px;
+    canvas{display:block;width:100%;height:100%}
+    .yAxisLabels{
+      position:absolute;right:8px;top:12px;bottom:38px;
+      display:flex;flex-direction:column;justify-content:space-between;
       pointer-events:none;
-      display:none;
-      z-index: 3;
+      font-size:12px;color:rgba(15,23,42,.38);font-weight:900;
+      text-align:right;
     }
-
+    .xAxisLabels{
+      display:flex;justify-content:space-between;
+      margin:8px 6px 0;
+      font-size:12px;color:rgba(15,23,42,.35);font-weight:900;
+      letter-spacing:.01em;
+    }
+    .cursorLine{
+      position:absolute;top:10px;bottom:36px;width:2px;
+      background:rgba(37,99,235,.55);
+      border-radius:99px;
+      pointer-events:none;
+      transform:translateX(-1px);
+      display:none;
+    }
+    .cursorDot{
+      position:absolute;
+      width:10px;height:10px;border-radius:99px;
+      background:var(--blue);
+      border:3px solid #fff;
+      box-shadow:0 8px 16px rgba(37,99,235,.25);
+      pointer-events:none;
+      transform:translate(-50%,-50%);
+      display:none;
+    }
     .tooltip{
       position:absolute;
-      min-width: 88px;
-      padding: 8px 10px;
+      padding:12px 14px;
+      border-radius:14px;
       background:#fff;
-      border:1px solid rgba(0,0,0,.08);
-      box-shadow: 0 10px 26px rgba(0,0,0,.14);
-      border-radius: 10px;
-      transform: translate(-50%, -112%);
+      border:1px solid rgba(15,23,42,.10);
+      box-shadow:0 18px 40px rgba(15,23,42,.14);
       pointer-events:none;
+      transform:translate(-50%,-110%);
       display:none;
-      white-space:nowrap;
-      z-index: 4;
+      min-width:90px;
     }
-    .tooltip .tLabel{
-      color: var(--text);
-      font-weight: 1000;
-      font-size: 16px;
-      margin-bottom: 2px;
-      letter-spacing:.1px;
+    .ttLabel{font-weight:900;font-size:16px;line-height:1.1}
+    .ttVal{margin-top:4px;font-weight:900;font-size:20px;color:rgba(15,23,42,.6);line-height:1.1}
+    .detailTitle{margin:10px 6px 6px;font-size:20px;font-weight:900}
+    .detailDivider{height:3px;background:#f3a6bf;border-radius:99px;margin:0 6px 10px;opacity:.75}
+    .detailTabs{display:flex;gap:10px;margin:8px 4px 12px}
+    .detailTab{
+      border:0;border-radius:999px;padding:10px 16px;
+      background:var(--pill);color:#111827;font-weight:900;font-size:14px;
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,.06);
     }
-    .tooltip .tVal{
-      color: var(--muted);
-      font-weight: 1000;
-      font-size: 14px;
-      letter-spacing:.1px;
-    }
-
-    .tabsRow{
-      display:flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .tab{
-      border:none;
-      border-radius:999px;
-      padding: 10px 16px;
-      font-weight: 1000;
-      font-size: 14px;
-      background: var(--chip);
-      color: #374151;
-      cursor:pointer;
-    }
-    .tab.active{
-      background: var(--chipOn);
-      color:#fff;
-    }
-
-    .panelCard{
-      background: var(--card);
-      border: 1px solid rgba(0,0,0,.05);
-      border-radius: var(--radius);
-      box-shadow: 0 8px 18px rgba(0,0,0,.04);
-      padding: 14px 14px 12px;
-      margin-top: 10px;
-    }
-
-    .panelTitle{
-      font-weight: 1000;
-      color:#374151;
-      margin-bottom: 10px;
-      letter-spacing:.1px;
-    }
-
-    .ratioRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      margin: 10px 0 8px;
-      font-weight: 1000;
-    }
-    .ratioRow .lab{
-      font-size: 15px;
-      color: var(--text);
-      min-width: 86px;
-    }
-    .ratioRow .pct{
-      font-size: 18px;
-      color: var(--text);
-    }
-
-    .bar{
-      height: 10px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      overflow:hidden;
-    }
-    .bar > i{
-      display:block;
-      height:100%;
-      width: 50%;
-      background: var(--blue);
-      border-radius: 999px;
-    }
-
-    .ageRow{
-      margin: 14px 0 10px;
-    }
-    .ageHead{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-weight: 1000;
-      margin-bottom: 8px;
-    }
-    .ageHead .lab{ font-size: 15px; }
-    .ageHead .pct{ font-size: 18px; }
-
-    @media (max-width: 360px){
-      .cardRow{ gap:10px; }
-      .miniVal{ font-size: 20px; }
-      .toggle, .tab{ padding: 10px 14px; }
+    .detailTab.on{background:var(--pillOn);color:#fff}
+    .panel{background:var(--card);border:1px solid rgba(15,23,42,.08);border-radius:22px;box-shadow:var(--shadow);padding:14px 14px;margin:0 2px 12px}
+    .panelTitle{font-size:18px;font-weight:900;margin:2px 0 12px}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .kv{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+    .kv .k{font-size:14px;font-weight:900;color:rgba(15,23,42,.78)}
+    .kv .v{font-size:28px;font-weight:900;color:rgba(15,23,42,.92)}
+    .barBlock{margin-top:10px}
+    .barTop{display:flex;justify-content:space-between;align-items:baseline}
+    .barTop .k{font-size:16px;font-weight:900}
+    .barTop .v{font-size:26px;font-weight:900}
+    .bar{height:12px;border-radius:999px;background:rgba(15,23,42,.10);overflow:hidden;margin-top:10px}
+    .bar > i{display:block;height:100%;width:0%;background:var(--blue);border-radius:999px}
+    .muted{color:rgba(15,23,42,.55);font-weight:800;font-size:12px}
+    .hidden{display:none}
+    .tableWrap{background:var(--card);border:1px solid rgba(15,23,42,.08);border-radius:22px;box-shadow:var(--shadow);padding:14px 14px;margin:0 2px 12px}
+    table{width:100%;border-collapse:collapse;font-size:14px}
+    th,td{padding:10px 6px;border-bottom:1px solid rgba(15,23,42,.06);text-align:left}
+    th{color:rgba(15,23,42,.65);font-weight:900}
+    td{font-weight:800;color:rgba(15,23,42,.85)}
+    td.r{text-align:right}
+    @media (max-width:390px){
+      .wrap{padding-left:12px;padding-right:12px}
+      .kpiMoney{font-size:32px}
+      .miniVal{font-size:20px}
+      .kv .v{font-size:26px}
+      .barTop .v{font-size:24px}
     }
   </style>
 </head>
-
 <body>
-  <div class="app">
+  <div class="wrap">
     <div class="topbar">
-      <div class="brand">Pixy</div>
-      <div class="title">インサイト</div>
-      <div style="width:54px"></div>
+      <div class="toprow">
+        <div>
+          <div class="title">ピクシーインサイト</div>
+          <div class="sub" id="subTitle">サンプルデータ</div>
+        </div>
+        <div class="monthRow" id="monthRow"></div>
+      </div>
     </div>
 
-    <div class="sectionTitle">メインデータ</div>
+    <h2>メインデータ</h2>
     <div class="divider"></div>
 
-    <div class="cardRow">
-      <div class="card pink">
-        <h3>今月の報酬金</h3>
-        <div class="bigMoney" id="kpiMoney">¥ 100,000</div>
-        <div class="subLine">前月比 <b id="kpiMoM">101%</b></div>
-      </div>
+    <div id="viewKpi">
+      <div class="kpiRow">
+        <button id="tabKpi" class="card cardBtn cardPink" type="button" aria-label="メインデータ">
+          <div class="kpiLabel">今月の報酬金</div>
+          <div class="kpiMoney" id="kpiMoney">¥ 0</div>
+          <div class="kpiSub">前月比　<b id="kpiMom">--</b></div>
+        </button>
 
-      <div class="card" style="padding:0">
-        <button class="detailBtn" id="detailCardBtn" style="padding:14px;border-radius:18px;">
-          <h3>鑑定データ詳細</h3>
+        <button id="tabDetail" class="card cardBtn cardOutline" type="button" aria-label="鑑定データ詳細へ">
+          <div class="kpiLabel">鑑定データ詳細</div>
           <div class="kpiGrid">
             <div>
               <div class="miniLabel">リピート件数</div>
-              <div class="miniVal" id="kpiRepeatCnt">13</div>
+              <div class="miniVal" id="kpiRepeatCases">0</div>
             </div>
             <div>
               <div class="miniLabel">リピート人数</div>
-              <div class="miniVal" id="kpiRepeatUsers">9</div>
+              <div class="miniVal" id="kpiRepeatUsers">0</div>
             </div>
             <div>
               <div class="miniLabel">鑑定件数</div>
-              <div class="miniVal" id="kpiKanteiCnt">76</div>
+              <div class="miniVal" id="kpiTotalCases">0</div>
             </div>
             <div>
               <div class="miniLabel">鑑定人数</div>
-              <div class="miniVal" id="kpiKanteiUsers">63</div>
+              <div class="miniVal" id="kpiTotalUsers">0</div>
             </div>
           </div>
         </button>
       </div>
-    </div>
 
-    <div class="toggleRow" aria-label="グラフ切替">
-      <button class="toggle active" data-mode="hour">時間別</button>
-      <button class="toggle" data-mode="weekday">曜日別</button>
-      <button class="toggle" data-mode="day">日別</button>
-    </div>
+      <div class="segRow">
+        <button class="seg on" id="btnHour" type="button">時間別</button>
+        <button class="seg" id="btnWeekday" type="button">曜日別</button>
+        <button class="seg" id="btnDay" type="button">日別</button>
+      </div>
 
-    <div class="chartCard">
       <div class="chartWrap">
         <div class="chartViewport" id="chartViewport">
-          <div class="chartInner" id="chartInner">
-            <canvas id="chart"></canvas>
-            <div class="cursorLine" id="cursorLine"></div>
-            <div class="tooltip" id="tooltip">
-              <div class="tLabel" id="tipLabel">02時</div>
-              <div class="tVal" id="tipValue">¥ 800</div>
-            </div>
+          <canvas id="chartCanvas"></canvas>
+
+          <div class="yAxisLabels" id="yAxisLabels"></div>
+
+          <div class="cursorLine" id="cursorLine"></div>
+          <div class="cursorDot" id="cursorDot"></div>
+
+          <div class="tooltip" id="tooltip">
+            <div class="ttLabel" id="ttLabel">-</div>
+            <div class="ttVal" id="ttVal">¥ 0</div>
+          </div>
+        </div>
+        <div class="xAxisLabels" id="xAxisLabels"></div>
+      </div>
+
+      <div class="detailTitle">詳細データ</div>
+      <div class="detailDivider"></div>
+
+      <div class="detailTabs">
+        <button class="detailTab on" id="detailUser" type="button">ユーザー分析</button>
+        <button class="detailTab" id="detailKanteishi" type="button">鑑定師分析</button>
+      </div>
+
+      <div id="panelUser">
+        <div class="panel">
+          <div class="panelTitle">男女比率</div>
+          <div class="row2">
+            <div class="kv"><div class="k">男性</div><div class="v" id="malePct">0%</div></div>
+            <div class="kv"><div class="k">女性</div><div class="v" id="femalePct">0%</div></div>
+          </div>
+          <div class="barBlock">
+            <div class="barTop"><div class="k">男性</div><div class="muted" id="maleHint">-</div></div>
+            <div class="bar"><i id="maleBar"></i></div>
+          </div>
+          <div class="barBlock">
+            <div class="barTop"><div class="k">女性</div><div class="muted" id="femaleHint">-</div></div>
+            <div class="bar"><i id="femaleBar"></i></div>
           </div>
         </div>
 
-        <div class="yLabels">
-          <div id="yTop">1,155</div>
-          <div id="yMid">770</div>
-          <div id="yBot">385</div>
+        <div class="panel">
+          <div class="panelTitle">年齢構成比</div>
+          <div id="ageList"></div>
         </div>
       </div>
 
-      <div class="xLabelsViewport" id="xLabelsViewport">
-        <div class="xLabels" id="xLabels"></div>
-      </div>
-    </div>
-
-    <div class="sectionTitle" id="detailSection">詳細データ</div>
-    <div class="divider"></div>
-
-    <div class="tabsRow">
-      <button class="tab active" data-tab="user">ユーザー分析</button>
-      <button class="tab" data-tab="kanteishi">鑑定師分析</button>
-    </div>
-
-    <div id="tabUser">
-      <div class="panelCard">
-        <div class="panelTitle">男女比率</div>
-
-        <div class="ratioRow">
-          <div class="lab">女性</div>
-          <div class="pct" id="gFemale">0%</div>
-        </div>
-        <div class="bar"><i id="bFemale" style="width:0%"></i></div>
-
-        <div class="ratioRow" style="margin-top:14px;">
-          <div class="lab">男性</div>
-          <div class="pct" id="gMale">0%</div>
-        </div>
-        <div class="bar"><i id="bMale" style="width:0%"></i></div>
-
-        <div style="margin-top:10px;color:#6b7280;font-weight:900;font-size:12px;letter-spacing:.1px;">
-          ※ここは「ユーザーマスタ×鑑定ログ」から計算した値を入れる想定
-        </div>
-      </div>
-
-      <div class="panelCard">
-        <div class="panelTitle">年齢構成比</div>
-
-        <div class="ageRow">
-          <div class="ageHead"><div class="lab">-29</div><div class="pct" id="a1">0%</div></div>
-          <div class="bar"><i id="ab1" style="width:0%"></i></div>
-        </div>
-
-        <div class="ageRow">
-          <div class="ageHead"><div class="lab">30-39</div><div class="pct" id="a2">0%</div></div>
-          <div class="bar"><i id="ab2" style="width:0%"></i></div>
-        </div>
-
-        <div class="ageRow">
-          <div class="ageHead"><div class="lab">40-49</div><div class="pct" id="a3">0%</div></div>
-          <div class="bar"><i id="ab3" style="width:0%"></i></div>
-        </div>
-
-        <div class="ageRow">
-          <div class="ageHead"><div class="lab">50-59</div><div class="pct" id="a4">0%</div></div>
-          <div class="bar"><i id="ab4" style="width:0%"></i></div>
-        </div>
-
-        <div class="ageRow">
-          <div class="ageHead"><div class="lab">60-69</div><div class="pct" id="a5">0%</div></div>
-          <div class="bar"><i id="ab5" style="width:0%"></i></div>
-        </div>
-
-        <div class="ageRow" style="margin-bottom:0;">
-          <div class="ageHead"><div class="lab">70-</div><div class="pct" id="a6">0%</div></div>
-          <div class="bar"><i id="ab6" style="width:0%"></i></div>
+      <div id="panelKanteishi" class="hidden">
+        <div class="panel">
+          <div class="panelTitle">鑑定師分析</div>
+          <div class="muted">ここはあとで「鑑定師ごとの数字」を入れる想定。今は見た目だけ残しています。</div>
         </div>
       </div>
     </div>
 
-    <div id="tabKanteishi" style="display:none">
-      <div class="panelCard">
-        <div class="panelTitle">鑑定師分析</div>
-        <div style="color:#6b7280;font-weight:900;font-size:13px;letter-spacing:.1px;">
-          ここは次段階で「鑑定師ごとの差分」が出るように拡張できます。
-        </div>
+    <div id="viewDetail" class="hidden">
+      <h2 style="margin-top:18px">鑑定データ詳細</h2>
+      <div class="divider"></div>
+
+      <div class="tableWrap">
+        <div class="panelTitle" style="margin-top:0">回数別ユーザー数</div>
+        <table>
+          <thead>
+            <tr><th>回数</th><th class="r">人数</th><th class="r">割合</th></tr>
+          </thead>
+          <tbody id="countTableBody"></tbody>
+        </table>
+      </div>
+
+      <div style="margin:10px 2px 0">
+        <button id="backToMain" class="seg on" type="button" style="width:100%">戻る</button>
       </div>
     </div>
-
   </div>
 
-<script>
-  const APP = {
-    state: { month: "12月", chartMode: "hour", cursorIndex: null },
-    dataByMonth: {
-      "12月": {
-        money: 100000, mom: 101,
-        repeatCnt: 13, repeatUsers: 9,
-        kanteiCnt: 76, kanteiUsers: 63,
-        gender: { female: 62.0, male: 38.0 },
-        ageBuckets: { a1: 18.0, a2: 31.0, a3: 21.0, a4: 14.0, a5: 10.0, a6: 6.0 },
-        chart: {
-          hour:    { labels: ["02時","03時","04時","05時","06時"], values: [820,860,780,815,790] },
-          weekday: { labels: ["月","火","水","木","金","土","日"], values: [700,820,760,810,900,740,680] },
-          day:     { labels: ["4日","5日","6日","7日","8日","9日","14日","15日","16日","17日","18日","19日"], values: [900,820,830,810,890,850,1100,980,918,900,780,650] }
+  <script>
+    (function(){
+      function yen(n){
+        var v = Math.round(Number(n)||0);
+        return "¥ " + v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+      function pct01(x){
+        var v = Number(x)||0;
+        if(v<0) v=0;
+        if(v>1) v=1;
+        return Math.round(v*1000)/10;
+      }
+      function pctStr(x){ return pct01(x).toFixed(1).replace(/\.0$/,"") + "%"; }
+      function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+
+      var dataByMonth = {
+        "12": {
+          label:"12月",
+          reward:100000,
+          mom:101,
+          detail:{repeatCases:13, repeatUsers:9, totalCases:76, totalUsers:63},
+          series:{
+            hour:(function(){ var a=[]; for(var i=0;i<24;i++){ a.push(Math.round(650 + 220*Math.sin((i-6)/24*2*Math.PI) + (i%3)*22)); } return a; })(),
+            weekday:[720,860,780,690,840,1020,910],
+            day:(function(){ var a=[]; for(var i=1;i<=31;i++){ a.push(Math.round(780 + 260*Math.sin((i-6)/31*2*Math.PI) + (i%5)*18)); } return a; })()
+          },
+          user:{
+            gender:{male:0.62,female:0.38},
+            age:[
+              {label:"18 - 24", value:0.419},
+              {label:"25 - 34", value:0.309},
+              {label:"35 - 44", value:0.127},
+              {label:"45 - 54", value:0.099},
+              {label:"55 - 64", value:0.032},
+              {label:"65 -", value:0.014}
+            ]
+          },
+          countDist:[
+            {label:"1回", users:120},
+            {label:"2回", users:48},
+            {label:"3回", users:26},
+            {label:"4回", users:14},
+            {label:"5回以上", users:9}
+          ]
+        },
+        "11": {
+          label:"11月",
+          reward:89000,
+          mom:96,
+          detail:{repeatCases:11, repeatUsers:8, totalCases:71, totalUsers:59},
+          series:{
+            hour:(function(){ var a=[]; for(var i=0;i<24;i++){ a.push(Math.round(610 + 180*Math.sin((i-7)/24*2*Math.PI) + (i%4)*20)); } return a; })(),
+            weekday:[680,770,740,650,800,950,880],
+            day:(function(){ var a=[]; for(var i=1;i<=30;i++){ a.push(Math.round(720 + 240*Math.sin((i-5)/30*2*Math.PI) + (i%6)*15)); } return a; })()
+          },
+          user:{ gender:{male:0.58,female:0.42}, age:[{label:"18 - 24",value:0.382},{label:"25 - 34",value:0.325},{label:"35 - 44",value:0.151},{label:"45 - 54",value:0.092},{label:"55 - 64",value:0.038},{label:"65 -",value:0.012}] },
+          countDist:[{label:"1回",users:110},{label:"2回",users:44},{label:"3回",users:24},{label:"4回",users:12},{label:"5回以上",users:8}]
+        },
+        "10": {
+          label:"10月",
+          reward:93000,
+          mom:103,
+          detail:{repeatCases:12, repeatUsers:9, totalCases:74, totalUsers:61},
+          series:{
+            hour:(function(){ var a=[]; for(var i=0;i<24;i++){ a.push(Math.round(640 + 200*Math.sin((i-6)/24*2*Math.PI) + (i%2)*24)); } return a; })(),
+            weekday:[710,840,760,670,820,980,900],
+            day:(function(){ var a=[]; for(var i=1;i<=31;i++){ a.push(Math.round(740 + 250*Math.sin((i-7)/31*2*Math.PI) + (i%7)*12)); } return a; })()
+          },
+          user:{ gender:{male:0.61,female:0.39}, age:[{label:"18 - 24",value:0.401},{label:"25 - 34",value:0.311},{label:"35 - 44",value:0.138},{label:"45 - 54",value:0.101},{label:"55 - 64",value:0.035},{label:"65 -",value:0.014}] },
+          countDist:[{label:"1回",users:118},{label:"2回",users:46},{label:"3回",users:25},{label:"4回",users:13},{label:"5回以上",users:8}]
+        },
+        "09": {
+          label:"9月",
+          reward:91000,
+          mom:99,
+          detail:{repeatCases:10, repeatUsers:7, totalCases:69, totalUsers:58},
+          series:{
+            hour:(function(){ var a=[]; for(var i=0;i<24;i++){ a.push(Math.round(600 + 170*Math.sin((i-6)/24*2*Math.PI) + (i%5)*14)); } return a; })(),
+            weekday:[660,760,730,640,790,920,860],
+            day:(function(){ var a=[]; for(var i=1;i<=30;i++){ a.push(Math.round(700 + 230*Math.sin((i-6)/30*2*Math.PI) + (i%4)*18)); } return a; })()
+          },
+          user:{ gender:{male:0.57,female:0.43}, age:[{label:"18 - 24",value:0.374},{label:"25 - 34",value:0.336},{label:"35 - 44",value:0.152},{label:"45 - 54",value:0.092},{label:"55 - 64",value:0.036},{label:"65 -",value:0.010}] },
+          countDist:[{label:"1回",users:106},{label:"2回",users:42},{label:"3回",users:23},{label:"4回",users:11},{label:"5回以上",users:7}]
+        }
+      };
+
+      var state = { monthKey:"12", mode:"day", cursorIndex:null, detailTab:"user", mainView:"kpi" };
+
+      var monthRow=document.getElementById("monthRow");
+      var subTitle=document.getElementById("subTitle");
+
+      var tabKpi=document.getElementById("tabKpi");
+      var tabDetail=document.getElementById("tabDetail");
+      var viewKpi=document.getElementById("viewKpi");
+      var viewDetail=document.getElementById("viewDetail");
+      var backToMain=document.getElementById("backToMain");
+
+      var btnHour=document.getElementById("btnHour");
+      var btnWeekday=document.getElementById("btnWeekday");
+      var btnDay=document.getElementById("btnDay");
+
+      var chartViewport=document.getElementById("chartViewport");
+      var canvas=document.getElementById("chartCanvas");
+      var yAxisLabels=document.getElementById("yAxisLabels");
+      var xAxisLabels=document.getElementById("xAxisLabels");
+      var cursorLine=document.getElementById("cursorLine");
+      var cursorDot=document.getElementById("cursorDot");
+      var tooltip=document.getElementById("tooltip");
+      var ttLabel=document.getElementById("ttLabel");
+      var ttVal=document.getElementById("ttVal");
+
+      var kpiMoney=document.getElementById("kpiMoney");
+      var kpiMom=document.getElementById("kpiMom");
+      var kpiRepeatCases=document.getElementById("kpiRepeatCases");
+      var kpiRepeatUsers=document.getElementById("kpiRepeatUsers");
+      var kpiTotalCases=document.getElementById("kpiTotalCases");
+      var kpiTotalUsers=document.getElementById("kpiTotalUsers");
+
+      var detailUser=document.getElementById("detailUser");
+      var detailKanteishi=document.getElementById("detailKanteishi");
+      var panelUser=document.getElementById("panelUser");
+      var panelKanteishi=document.getElementById("panelKanteishi");
+
+      var malePct=document.getElementById("malePct");
+      var femalePct=document.getElementById("femalePct");
+      var maleBar=document.getElementById("maleBar");
+      var femaleBar=document.getElementById("femaleBar");
+      var maleHint=document.getElementById("maleHint");
+      var femaleHint=document.getElementById("femaleHint");
+      var ageList=document.getElementById("ageList");
+
+      var countTableBody=document.getElementById("countTableBody");
+
+      function renderMonthRow(){
+        monthRow.innerHTML="";
+        var order=["12","11","10","09"];
+        for(var i=0;i<order.length;i++){
+          var k=order[i];
+          if(!dataByMonth[k]) continue;
+          var btn=document.createElement("button");
+          btn.type="button";
+          btn.className="chip"+(state.monthKey===k?" on":"");
+          btn.textContent=dataByMonth[k].label;
+          (function(key){
+            btn.addEventListener("click",function(){
+              state.monthKey=key;
+              state.cursorIndex=null;
+              renderAll();
+            });
+          })(k);
+          monthRow.appendChild(btn);
         }
       }
-    }
-  };
 
-  const $ = (q)=>document.querySelector(q);
-
-  function fmtYen(n){
-    return "¥ " + Math.round(n).toLocaleString("ja-JP");
-  }
-
-  function setPct(el, barEl, v){
-    const vv = Math.max(0, Math.min(100, Number(v)||0));
-    el.textContent = vv.toFixed(1).replace(/\.0$/, "") + "%";
-    barEl.style.width = vv + "%";
-  }
-
-  function syncKpiAndUser(){
-    const d = APP.dataByMonth[APP.state.month];
-
-    $("#kpiMoney").textContent = fmtYen(d.money);
-    $("#kpiMoM").textContent = d.mom + "%";
-    $("#kpiRepeatCnt").textContent = d.repeatCnt.toLocaleString("ja-JP");
-    $("#kpiRepeatUsers").textContent = d.repeatUsers.toLocaleString("ja-JP");
-    $("#kpiKanteiCnt").textContent = d.kanteiCnt.toLocaleString("ja-JP");
-    $("#kpiKanteiUsers").textContent = d.kanteiUsers.toLocaleString("ja-JP");
-
-    setPct($("#gFemale"), $("#bFemale"), d.gender.female);
-    setPct($("#gMale"), $("#bMale"), d.gender.male);
-
-    const a = d.ageBuckets;
-    setPct($("#a1"), $("#ab1"), a.a1);
-    setPct($("#a2"), $("#ab2"), a.a2);
-    setPct($("#a3"), $("#ab3"), a.a3);
-    setPct($("#a4"), $("#ab4"), a.a4);
-    setPct($("#a5"), $("#ab5"), a.a5);
-    setPct($("#a6"), $("#ab6"), a.a6);
-  }
-
-  const chart = {
-    canvas: $("#chart"),
-    viewport: $("#chartViewport"),
-    inner: $("#chartInner"),
-    ctx: null,
-    w: 0, h: 0,
-    slot: 50,
-    padding: { top: 16, right: 14, bottom: 16, left: 14 },
-    points: [],
-    init(){
-      this.ctx = this.canvas.getContext("2d");
-      this.resize();
-    },
-    resize(){
-      const rect = this.inner.getBoundingClientRect();
-      const w = Math.max(10, rect.width);
-      const h = Math.max(10, rect.height);
-      this.w = w; this.h = h;
-
-      const dpr = window.devicePixelRatio || 1;
-      this.canvas.width = Math.floor(w * dpr);
-      this.canvas.height = Math.floor(h * dpr);
-      this.canvas.style.width = w + "px";
-      this.canvas.style.height = h + "px";
-      this.ctx.setTransform(dpr,0,0,dpr,0,0);
-    },
-    setInnerWidth(n){
-      const innerW = (n-1)*this.slot + this.padding.left + this.padding.right;
-      this.inner.style.width = Math.max(innerW, this.viewport.clientWidth) + "px";
-      $("#xLabels").style.setProperty("--slot", this.slot + "px");
-    },
-    draw(){
-      const ctx = this.ctx;
-      const w = this.w, h = this.h;
-      const p = this.padding;
-
-      const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
-      const labels = d.labels;
-      const values = d.values;
-      const n = values.length;
-
-      this.setInnerWidth(n);
-      this.resize();
-
-      ctx.clearRect(0,0,w,h);
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0,0,w,h);
-
-      const maxV = Math.max(...values);
-      const minV = Math.min(...values);
-      const padV = Math.max(1, (maxV - minV) * 0.18);
-
-      const topV = Math.ceil((maxV + padV)/5)*5;
-      const botV = Math.floor((minV - padV)/5)*5;
-
-      $("#yTop").textContent = topV.toLocaleString("ja-JP");
-      $("#yMid").textContent = Math.round((topV+botV)/2).toLocaleString("ja-JP");
-      $("#yBot").textContent = botV.toLocaleString("ja-JP");
-
-      const mapY = (v)=>{
-        const t = (v - botV) / (topV - botV);
-        return (h - p.bottom - 8) - t * (h - p.top - p.bottom - 16);
-      };
-      const mapX = (i)=> p.left + i * this.slot;
-
-      const gridYs = [ p.top + 8, (h + p.top - p.bottom)/2, h - p.bottom - 8 ];
-      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--grid").trim() || "#e5e7eb";
-      ctx.lineWidth = 1;
-      ctx.setLineDash([3,4]);
-      gridYs.forEach(y=>{
-        ctx.beginPath();
-        ctx.moveTo(p.left, y);
-        ctx.lineTo(w - p.right, y);
-        ctx.stroke();
-      });
-      ctx.setLineDash([]);
-
-      const pts = [];
-      for(let i=0;i<n;i++){
-        pts.push({ i, x: mapX(i), y: mapY(values[i]), v: values[i] });
+      function setMainView(v){
+        state.mainView=v;
+        if(v==="kpi"){
+          viewKpi.classList.remove("hidden");
+          viewDetail.classList.add("hidden");
+        }else{
+          viewKpi.classList.add("hidden");
+          viewDetail.classList.remove("hidden");
+        }
       }
-      this.points = pts;
+      tabKpi.addEventListener("click",function(){ setMainView("kpi"); });
+      tabDetail.addEventListener("click",function(){ setMainView("detail"); renderCountTable(); });
+      backToMain.addEventListener("click",function(){ setMainView("kpi"); });
 
-      const grad = ctx.createLinearGradient(0, p.top, 0, h);
-      grad.addColorStop(0, "rgba(37,99,235,.20)");
-      grad.addColorStop(1, "rgba(37,99,235,0)");
-      ctx.fillStyle = grad;
+      function setDetailTab(t){
+        state.detailTab=t;
+        if(t==="user"){
+          detailUser.classList.add("on"); detailKanteishi.classList.remove("on");
+          panelUser.classList.remove("hidden"); panelKanteishi.classList.add("hidden");
+        }else{
+          detailUser.classList.remove("on"); detailKanteishi.classList.add("on");
+          panelUser.classList.add("hidden"); panelKanteishi.classList.remove("hidden");
+        }
+      }
+      detailUser.addEventListener("click",function(){ setDetailTab("user"); });
+      detailKanteishi.addEventListener("click",function(){ setDetailTab("kanteishi"); });
 
-      ctx.beginPath();
-      pts.forEach((pt, idx)=>{
-        if(idx===0) ctx.moveTo(pt.x, pt.y);
-        else ctx.lineTo(pt.x, pt.y);
+      function setMode(m){
+        state.mode=m;
+        btnHour.classList.toggle("on",m==="hour");
+        btnWeekday.classList.toggle("on",m==="weekday");
+        btnDay.classList.toggle("on",m==="day");
+        state.cursorIndex=null;
+        drawChart();
+      }
+      btnHour.addEventListener("click",function(){ setMode("hour"); });
+      btnWeekday.addEventListener("click",function(){ setMode("weekday"); });
+      btnDay.addEventListener("click",function(){ setMode("day"); });
+
+      var chartGeom={w:0,h:0,dpr:1,padL:14,padR:54,padT:12,padB:34,plotW:0,plotH:0};
+
+      function labelsForMode(mode,n){
+        if(mode==="hour"){ var a=[]; for(var i=0;i<24;i++) a.push(i+"時"); return a; }
+        if(mode==="weekday"){ return ["月","火","水","木","金","土","日"]; }
+        var b=[]; for(var d=1; d<=n; d++) b.push(d+"日"); return b;
+      }
+      function buildXAxisTicks(labels){
+        var n=labels.length, maxTicks=7;
+        if(n<=maxTicks) return labels;
+        var out=[];
+        for(var i=0;i<maxTicks;i++){
+          var idx=Math.round(i*(n-1)/(maxTicks-1));
+          out.push(labels[idx]);
+        }
+        return out;
+      }
+      function sizeCanvas(){
+        var rect=chartViewport.getBoundingClientRect();
+        var dpr=window.devicePixelRatio||1;
+        var w=Math.max(1,Math.round(rect.width));
+        var h=Math.max(1,Math.round(rect.height));
+        chartGeom.w=w; chartGeom.h=h; chartGeom.dpr=dpr;
+        canvas.width=Math.round(w*dpr);
+        canvas.height=Math.round(h*dpr);
+        canvas.style.width=w+"px";
+        canvas.style.height=h+"px";
+        chartGeom.plotW=w-chartGeom.padL-chartGeom.padR;
+        chartGeom.plotH=h-chartGeom.padT-chartGeom.padB;
+      }
+      function computeYRange(vals){
+        var min=Infinity,max=-Infinity;
+        for(var i=0;i<vals.length;i++){ var v=vals[i]; if(v<min) min=v; if(v>max) max=v; }
+        if(!isFinite(min)||!isFinite(max)){ min=0; max=1; }
+        if(min===max) max=min+1;
+        var pad=(max-min)*0.18;
+        return {min:Math.max(0,min-pad), max:max+pad};
+      }
+      function niceTicks(min,max,count){
+        var out=[];
+        for(var i=0;i<count;i++) out.push(min+(max-min)*(i/(count-1)));
+        return out;
+      }
+      function setYAxisLabels(min,max){
+        var ticks=niceTicks(min,max,3);
+        yAxisLabels.innerHTML="";
+        for(var i=0;i<ticks.length;i++){
+          var div=document.createElement("div");
+          div.textContent=Math.round(ticks[i]).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");
+          yAxisLabels.appendChild(div);
+        }
+      }
+      function xAt(i,n){
+        if(n<=1) return chartGeom.padL;
+        return chartGeom.padL + chartGeom.plotW*(i/(n-1));
+      }
+      function yAt(v,range){
+        var t=(v-range.min)/(range.max-range.min);
+        t=clamp(t,0,1);
+        return chartGeom.padT + chartGeom.plotH*(1-t);
+      }
+
+      function drawChart(){
+        var m=dataByMonth[state.monthKey];
+        var vals=m.series[state.mode];
+        var n=vals.length;
+        var labels=labelsForMode(state.mode,n);
+
+        sizeCanvas();
+        if(state.cursorIndex===null) state.cursorIndex=Math.floor((n-1)/2);
+
+        var range=computeYRange(vals);
+        setYAxisLabels(range.min,range.max);
+
+        var tickLabels=buildXAxisTicks(labels);
+        xAxisLabels.innerHTML="";
+        for(var i=0;i<tickLabels.length;i++){
+          var s=document.createElement("span");
+          s.textContent=tickLabels[i];
+          xAxisLabels.appendChild(s);
+        }
+
+        var ctx=canvas.getContext("2d");
+        var dpr=chartGeom.dpr;
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.clearRect(0,0,chartGeom.w,chartGeom.h);
+
+        ctx.save();
+        ctx.strokeStyle="rgba(15,23,42,.10)";
+        ctx.lineWidth=1;
+        ctx.setLineDash([3,5]);
+        for(var g=0; g<3; g++){
+          var y=chartGeom.padT + chartGeom.plotH*(g/2);
+          ctx.beginPath();
+          ctx.moveTo(chartGeom.padL,y);
+          ctx.lineTo(chartGeom.padL+chartGeom.plotW,y);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        ctx.save();
+        ctx.lineWidth=3;
+        ctx.lineJoin="round";
+        ctx.lineCap="round";
+        ctx.strokeStyle="#2563eb";
+        ctx.beginPath();
+        for(var i2=0;i2<n;i2++){
+          var x=xAt(i2,n), y2=yAt(vals[i2],range);
+          if(i2===0) ctx.moveTo(x,y2); else ctx.lineTo(x,y2);
+        }
+        ctx.stroke();
+
+        ctx.beginPath();
+        for(var j=0;j<n;j++){
+          var x2=xAt(j,n), y3=yAt(vals[j],range);
+          if(j===0) ctx.moveTo(x2,y3); else ctx.lineTo(x2,y3);
+        }
+        ctx.lineTo(chartGeom.padL+chartGeom.plotW, chartGeom.padT+chartGeom.plotH);
+        ctx.lineTo(chartGeom.padL, chartGeom.padT+chartGeom.plotH);
+        ctx.closePath();
+        var grad=ctx.createLinearGradient(0,chartGeom.padT,0,chartGeom.padT+chartGeom.plotH);
+        grad.addColorStop(0,"rgba(37,99,235,.22)");
+        grad.addColorStop(1,"rgba(37,99,235,0)");
+        ctx.fillStyle=grad;
+        ctx.fill();
+        ctx.restore();
+
+        var idx=clamp(state.cursorIndex,0,n-1);
+        var cx=xAt(idx,n);
+        var cy=yAt(vals[idx],range);
+
+        cursorLine.style.display="block";
+        cursorDot.style.display="block";
+        tooltip.style.display="block";
+
+        cursorLine.style.left=cx+"px";
+        cursorDot.style.left=cx+"px";
+        cursorDot.style.top=cy+"px";
+
+        var minX=58, maxX=chartGeom.w-58;
+        var tx=clamp(cx,minX,maxX);
+        var ty=clamp(cy,44,chartGeom.padT+chartGeom.plotH-8);
+
+        tooltip.style.left=tx+"px";
+        tooltip.style.top=ty+"px";
+        ttLabel.textContent=labels[idx];
+        ttVal.textContent=yen(vals[idx]);
+      }
+
+      var dragging=false;
+      function indexFromClientX(clientX){
+        var rect=chartViewport.getBoundingClientRect();
+        var x=clientX-rect.left;
+        x=clamp(x,chartGeom.padL,chartGeom.padL+chartGeom.plotW);
+        var m=dataByMonth[state.monthKey];
+        var vals=m.series[state.mode];
+        var n=vals.length;
+        if(n<=1) return 0;
+        var t=(x-chartGeom.padL)/chartGeom.plotW;
+        var idx=Math.round(t*(n-1));
+        return clamp(idx,0,n-1);
+      }
+      chartViewport.addEventListener("pointerdown",function(e){
+        dragging=true;
+        try{ chartViewport.setPointerCapture(e.pointerId); }catch(_){}
+        state.cursorIndex=indexFromClientX(e.clientX);
+        drawChart();
       });
-      ctx.lineTo(pts[pts.length-1].x, h - p.bottom);
-      ctx.lineTo(pts[0].x, h - p.bottom);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      pts.forEach((pt, idx)=>{
-        if(idx===0) ctx.moveTo(pt.x, pt.y);
-        else ctx.lineTo(pt.x, pt.y);
+      chartViewport.addEventListener("pointermove",function(e){
+        if(!dragging) return;
+        state.cursorIndex=indexFromClientX(e.clientX);
+        drawChart();
       });
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--blue").trim() || "#2563eb";
-      ctx.stroke();
+      function endDrag(e){
+        dragging=false;
+        try{ chartViewport.releasePointerCapture(e.pointerId); }catch(_){}
+      }
+      chartViewport.addEventListener("pointerup",endDrag);
+      chartViewport.addEventListener("pointercancel",endDrag);
 
-      const idx = (APP.state.cursorIndex==null ? Math.floor(n/2) : APP.state.cursorIndex);
-      const sel = pts[Math.max(0,Math.min(n-1,idx))];
+      function renderUserPanels(){
+        var m=dataByMonth[state.monthKey];
+        var g=m.user.gender;
 
-      ctx.beginPath();
-      ctx.arc(sel.x, sel.y, 4, 0, Math.PI*2);
-      ctx.fillStyle = "#2563eb";
-      ctx.fill();
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "#ffffff";
-      ctx.stroke();
+        malePct.textContent=pctStr(g.male);
+        femalePct.textContent=pctStr(g.female);
+        maleHint.textContent=pctStr(g.male);
+        femaleHint.textContent=pctStr(g.female);
 
-      renderXLabels(labels);
-      renderTooltip(sel.x, sel.y, labels[sel.i], sel.v);
-      syncScrollbars();
-    }
-  };
+        maleBar.style.width=(Math.round(clamp(g.male,0,1)*1000)/10)+"%";
+        femaleBar.style.width=(Math.round(clamp(g.female,0,1)*1000)/10)+"%";
 
-  function renderXLabels(labels){
-    const row = $("#xLabels");
-    row.innerHTML = "";
-    labels.forEach(lab=>{
-      const sp = document.createElement("span");
-      sp.textContent = lab;
-      row.appendChild(sp);
-    });
-  }
+        ageList.innerHTML="";
+        for(var i=0;i<m.user.age.length;i++){
+          var row=m.user.age[i];
+          var wrap=document.createElement("div");
+          wrap.className="barBlock";
 
-  function renderTooltip(x, y, label, value){
-    const cursorLine = $("#cursorLine");
-    const tooltip = $("#tooltip");
-    cursorLine.style.display = "block";
-    tooltip.style.display = "block";
+          var top=document.createElement("div");
+          top.className="barTop";
 
-    cursorLine.style.left = x + "px";
+          var k=document.createElement("div");
+          k.className="k";
+          k.textContent=row.label;
 
-    $("#tipLabel").textContent = label;
-    $("#tipValue").textContent = fmtYen(value);
+          var v=document.createElement("div");
+          v.className="v";
+          v.textContent=pctStr(row.value);
 
-    const minX = 54;
-    const maxX = chart.inner.clientWidth - 54;
-    const clampedX = Math.max(minX, Math.min(maxX, x));
-    tooltip.style.left = clampedX + "px";
-    tooltip.style.top = y + "px";
-  }
+          top.appendChild(k); top.appendChild(v);
 
-  function pickIndexFromClientX(clientX){
-    const d = APP.dataByMonth[APP.state.month].chart[APP.state.chartMode];
-    const n = d.values.length;
+          var bar=document.createElement("div");
+          bar.className="bar";
 
-    const rect = chart.viewport.getBoundingClientRect();
-    const xInViewport = clientX - rect.left;
-    const xInInner = xInViewport + chart.viewport.scrollLeft;
+          var fill=document.createElement("i");
+          fill.style.width=(Math.round(clamp(row.value,0,1)*1000)/10)+"%";
 
-    const x0 = chart.padding.left;
-    const i = Math.round((xInInner - x0) / chart.slot);
-    return Math.max(0, Math.min(n-1, i));
-  }
+          bar.appendChild(fill);
 
-  function syncScrollbars(){
-    const vp = $("#chartViewport");
-    const xvp = $("#xLabelsViewport");
-    xvp.scrollLeft = vp.scrollLeft;
-  }
+          wrap.appendChild(top);
+          wrap.appendChild(bar);
+          ageList.appendChild(wrap);
+        }
+      }
 
-  function attachInteractions(){
-    const vp = $("#chartViewport");
-    const xvp = $("#xLabelsViewport");
+      function renderKpi(){
+        var m=dataByMonth[state.monthKey];
+        subTitle.textContent=m.label+" のインサイト";
+        kpiMoney.textContent=yen(m.reward);
+        kpiMom.textContent=m.mom+"%";
+        kpiRepeatCases.textContent=String(m.detail.repeatCases);
+        kpiRepeatUsers.textContent=String(m.detail.repeatUsers);
+        kpiTotalCases.textContent=String(m.detail.totalCases);
+        kpiTotalUsers.textContent=String(m.detail.totalUsers);
+      }
 
-    vp.addEventListener("scroll", ()=>{ xvp.scrollLeft = vp.scrollLeft; }, {passive:true});
-    xvp.addEventListener("scroll", ()=>{ vp.scrollLeft = xvp.scrollLeft; }, {passive:true});
+      function renderCountTable(){
+        var m=dataByMonth[state.monthKey];
+        var dist=m.countDist||[];
+        var total=0;
+        for(var i=0;i<dist.length;i++) total+=(dist[i].users||0);
+        countTableBody.innerHTML="";
+        for(var j=0;j<dist.length;j++){
+          var r=dist[j];
+          var tr=document.createElement("tr");
+          var td1=document.createElement("td"); td1.textContent=r.label;
+          var td2=document.createElement("td"); td2.className="r"; td2.textContent=String(r.users||0);
+          var td3=document.createElement("td"); td3.className="r";
+          var p=total>0 ? (r.users||0)/total : 0;
+          td3.textContent=pctStr(p);
+          tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3);
+          countTableBody.appendChild(tr);
+        }
+      }
 
-    vp.addEventListener("touchstart", (e)=>{
-      const t = e.touches && e.touches[0];
-      if(!t) return;
-      APP.state.cursorIndex = pickIndexFromClientX(t.clientX);
-      chart.draw();
-    }, {passive:true});
+      function renderAll(){
+        renderMonthRow();
+        renderKpi();
+        setDetailTab(state.detailTab);
 
-    vp.addEventListener("touchmove", (e)=>{
-      const t = e.touches && e.touches[0];
-      if(!t) return;
-      APP.state.cursorIndex = pickIndexFromClientX(t.clientX);
-      chart.draw();
-    }, {passive:true});
+        btnHour.classList.toggle("on",state.mode==="hour");
+        btnWeekday.classList.toggle("on",state.mode==="weekday");
+        btnDay.classList.toggle("on",state.mode==="day");
 
-    vp.addEventListener("pointerdown", (e)=>{
-      if(e.pointerType !== "mouse") return;
-      if(e.button !== 0) return;
-      APP.state.cursorIndex = pickIndexFromClientX(e.clientX);
-      chart.draw();
-    });
+        setMainView(state.mainView);
 
-    const detailBtn = $("#detailCardBtn");
-    const detailSec = $("#detailSection");
-    if(detailBtn && detailSec){
-      detailBtn.addEventListener("click", ()=>{
-        detailSec.scrollIntoView({behavior:"smooth", block:"start"});
-      });
-    }
+        renderUserPanels();
+        drawChart();
+        if(state.mainView==="detail") renderCountTable();
+      }
 
-    document.querySelectorAll(".toggle").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.querySelectorAll(".toggle").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        APP.state.chartMode = btn.dataset.mode;
-        APP.state.cursorIndex = null;
-        chart.draw();
-      });
-    });
+      function setupResize(){
+        if(window.ResizeObserver){
+          var ro=new ResizeObserver(function(){ drawChart(); });
+          ro.observe(chartViewport);
+        }else{
+          window.addEventListener("resize",function(){ drawChart(); });
+        }
+      }
 
-    document.querySelectorAll(".tab").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        const tab = btn.dataset.tab;
-        $("#tabUser").style.display = (tab==="user") ? "" : "none";
-        $("#tabKanteishi").style.display = (tab==="kanteishi") ? "" : "none";
-      });
-    });
-  }
-
-  function init(){
-    syncKpiAndUser();
-    chart.init();
-    attachInteractions();
-
-    const ro = new ResizeObserver(()=>{
-      chart.resize();
-      chart.draw();
-    });
-    ro.observe($("#chartInner"));
-
-    chart.draw();
-  }
-
-  init();
-</script>
+      setupResize();
+      renderAll();
+    })();
+  </script>
 </body>
 </html>
